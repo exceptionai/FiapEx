@@ -18,7 +18,7 @@ class AssignmentScreen extends StatelessWidget {
                 },
               ),
              )),
-      drawer: DrawerFiapEx(),
+      drawer: DrawerFiapEx(route: '/assignment'),
       body: Container(
           color: Theme.of(context).accentColor,
       ),

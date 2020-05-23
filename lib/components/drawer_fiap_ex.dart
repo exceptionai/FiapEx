@@ -2,7 +2,10 @@
 import 'package:flutter/material.dart';
 
 class DrawerFiapEx extends StatelessWidget {
-  DrawerFiapEx();
+
+  final String route;
+
+  const DrawerFiapEx({this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +62,24 @@ class DrawerFiapEx extends StatelessWidget {
                 height: 30,
               ),
               InkWell(
-                              child: Text(
+                              child: Row(
+                                children: <Widget>[
+
+                    route == '/' ? 
+                    Icon(
+                      Icons.arrow_right,
+                      color: Theme.of(context).primaryColor,
+                    ) : Padding(padding: EdgeInsets.only(left:25),),
+                                  Text(
                   'LISTAS DE CHAMADA',
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 18.0,
                       fontFamily: 'GothamHTF',
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
+                      color: _routeColor('/',context)),
                 ),
+                                ],
+                              ),
                 onTap: (){
                   Navigator.of(context).pushReplacementNamed('/');
                 },
@@ -85,13 +98,26 @@ class DrawerFiapEx extends StatelessWidget {
                 height: 30,
               ),
               InkWell(
-                child: Text(
-                  'ENTREGAS DE TRABALHO',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontFamily: 'GothamHTF',
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
+                child: Row(
+                  children: <Widget>[
+                    route == '/assignment' ? 
+                    Icon(
+                      Icons.arrow_right,
+                      color: Theme.of(context).primaryColor,
+                    ) : Padding(padding: EdgeInsets.only(left:25),),
+                    
+                    Container(
+                      
+                      child: Text(
+                        'ENTREGAS DE TRABALHO',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontFamily: 'GothamHTF',
+                            fontWeight: FontWeight.bold,
+                            color: _routeColor('/assignment',context)),
+                      ),
+                    ),
+                  ],
                 ),
                 onTap: (){
                   Navigator.of(context).pushReplacementNamed('/assignment');
@@ -116,6 +142,13 @@ class DrawerFiapEx extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color _routeColor(String route, BuildContext context){
+    if(this.route == route){
+      return Theme.of(context).primaryColor;
+    }
+    return Colors.white;
   }
 
   Widget _headerTitle(String title) {
