@@ -1,3 +1,4 @@
+import 'package:FiapEx/components/drawer_fiap_ex.dart';
 import 'package:flutter/material.dart';
 
 class AppBarFiapEx extends StatelessWidget implements PreferredSizeWidget{
@@ -9,14 +10,7 @@ class AppBarFiapEx extends StatelessWidget implements PreferredSizeWidget{
          backgroundColor: Theme.of(context).accentColor,
          elevation: 0, 
          centerTitle: true,
-         leading: Row(
-           children: [
-             SizedBox(width: 10,),
-             CircleAvatar(
-               backgroundImage: AssetImage('assets/images/profilepic.jpg'),
-              ),
-           ],
-         ),
+         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
          actions: [
              Padding(
                padding: const EdgeInsets.all(8.0),
