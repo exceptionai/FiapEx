@@ -58,13 +58,18 @@ class DrawerFiapEx extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              Text(
-                'LISTAS DE CHAMADA',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontFamily: 'GothamHTF',
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor),
+              InkWell(
+                              child: Text(
+                  'LISTAS DE CHAMADA',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'GothamHTF',
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor),
+                ),
+                onTap: (){
+                  Navigator.of(context).pushReplacementNamed('/');
+                },
               ),
               // SizedBox(height: 30,),
               // Text('NOVA CHAMADA',
@@ -79,13 +84,18 @@ class DrawerFiapEx extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              Text(
-                'ENTREGAS DE TRABALHO',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontFamily: 'GothamHTF',
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor),
+              InkWell(
+                child: Text(
+                  'ENTREGAS DE TRABALHO',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'GothamHTF',
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor),
+                ),
+                onTap: (){
+                  Navigator.of(context).pushReplacementNamed('/assignment');
+                },
               ),
               SizedBox(
                 height: 30,
