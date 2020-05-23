@@ -20,7 +20,13 @@ class AppBarFiapEx extends StatelessWidget implements PreferredSizeWidget{
          actions: [
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: Image.asset('assets/images/entregatrabalhos.png',height: 26,),
+               child: InkWell(
+                 child: Image.asset('assets/images/entregatrabalhos.png',
+                          height: 26),
+                onTap: (){
+                  Navigator.of(context).pushReplacementNamed('/assignment');
+                },
+              ),
              ),
            
          ],
