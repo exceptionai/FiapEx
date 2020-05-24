@@ -121,8 +121,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             color: Colors.white,
             size: 30.0,
           ),
-          onTap: () async {
-            await Navigator.pushNamed(context, "/assignment_deliveries", arguments: assignment);
+          onTap: () {
+            Navigator.pushNamed(context, "/assignment_deliveries", arguments: assignment);
           },
         ),
       ),
