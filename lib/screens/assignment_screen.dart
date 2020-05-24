@@ -99,7 +99,7 @@ class AssignmentScreen extends StatelessWidget {
               ),
             ),
             child: Icon(
-              Icons.autorenew,
+              Icons.assignment,
               color: Colors.white,
             ),
           ),
@@ -110,12 +110,7 @@ class AssignmentScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          subtitle: Row(
-            children: <Widget>[
-              Text("Data limite: "),
-              Text(DateFormat("dd-MM-yyyy").format(assignment.endDate)),
-            ],
-          ),
+          subtitle: assignmentCardSubtitle(assignment),
           trailing: Icon(
             Icons.keyboard_arrow_right,
             color: Colors.white,
@@ -124,6 +119,34 @@ class AssignmentScreen extends StatelessWidget {
           onTap: () async {},
         ),
       ),
+    );
+  }
+
+  Column assignmentCardSubtitle(AssignmentModel assignment) {
+    return Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text("Data limite para a entrega: "),
+            Text(DateFormat("dd-MM-yyyy").format(assignment.endDate)),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Text(
+                "Total de entregas: 0"), //TODO: trocar número por assignmentRepository.getDeliveries(assignment.id, "all");
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Text(
+                "Não avaliados: 0"), //TODO: trocar número por assignmentRepository.getDeliveries(assignment.id, "nonRated");
+            Text(" | "),
+            Text(
+                "Avaliados: 0"), //TODO: trocar número por assignmentRepository.getDeliveries(assignment.id, "rated");
+          ],
+        ),
+      ],
     );
   }
 }
