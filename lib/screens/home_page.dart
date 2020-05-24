@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       Text(classes[index].name ?? "",
                         style:TextStyle(fontSize: 22.0,fontWeight: FontWeight.bold),
                       ),
-                      Text(classes[index].id ?? "",
+                      Text(classes[index].id.toString() ?? "",
                         style:TextStyle(fontSize:18.0),
                       ),
                     ],

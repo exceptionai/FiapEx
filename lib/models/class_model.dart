@@ -1,24 +1,23 @@
+import 'package:FiapEx/repository/db_conection.dart';
+
 class ClassModel{
   
   int id;
   String name;
-  static final classTable = {
-    "tableName" : "classes",
-    "idColumn" : "idClass",
-    "nameColumn" : "name"
-  };
+  final String idColumn = DbConection.classTable["idColumn"];
+  final String nameColumn = DbConection.classTable["nameColumn"];
 
   ClassModel();
 
   ClassModel.fromMap(Map map){
-    id = map["${classTable["idColumn"]}"];
-    name = map["${classTable["nameColumn"]}"];
+    id = map[idColumn];
+    name = map[nameColumn];
   }
 
   Map toMap(){
     Map<String,dynamic> map = {
-      "${classTable["idColumn"]}" : id,
-      "${classTable["nameColumn"]}" : name
+      idColumn : id,
+      nameColumn : name
     };
     return map;
   }
