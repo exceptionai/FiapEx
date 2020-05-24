@@ -4,9 +4,14 @@ import 'package:FiapEx/models/assignment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AssignmentScreen extends StatelessWidget {
+class AssignmentScreen extends StatefulWidget {
   const AssignmentScreen({Key key}) : super(key: key);
 
+  @override
+  _AssignmentScreenState createState() => _AssignmentScreenState();
+}
+
+class _AssignmentScreenState extends State<AssignmentScreen> {
   @override
   Widget build(BuildContext context) {
     /*TODO: Delete all until -DELETE UNTIL HERE- when assignmentRepository is ready.*/
@@ -116,7 +121,9 @@ class AssignmentScreen extends StatelessWidget {
             color: Colors.white,
             size: 30.0,
           ),
-          onTap: () async {},
+          onTap: () async {
+            await Navigator.pushNamed(context, "/assignment_deliveries", arguments: assignment);
+          },
         ),
       ),
     );
