@@ -10,7 +10,7 @@ class AssignmentRepository {
     assignments.add(AssignmentModel(
         id: 1,
         endDate: DateTime.now(),
-        observations: "blablabla",
+        observations: "blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla",
         subject: "Trabalho 1"));
 
     assignments.add(AssignmentModel(
@@ -28,12 +28,16 @@ class AssignmentRepository {
     return assignments;
   }
 
+  Future<int> update(AssignmentModel assignmentModel) async {
+    return 1; /* TODO: change to db query */
+  }
+
   Future<int> getDeliveryAmount(int assignmentId, String type) async {
     if (type == "all") {
       return 0; /*TODO: Change to db query*/
     } else if (type == "nonRated") {
       return 0; /*TODO: Change to db query*/
-    } else if (type == "rated") {
+    } else {
       return 0; /*TODO: Change to db query*/
     }
   }
