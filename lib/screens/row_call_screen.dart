@@ -18,7 +18,7 @@ class RowCallScreen extends StatelessWidget {
                 },
               ),
              )),
-      drawer: DrawerFiapEx(),
+      drawer: DrawerFiapEx(route: '/',),
       body: Container(
           color: Color(0xff151819),
       ),
