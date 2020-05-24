@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         var routes = <String, WidgetBuilder>{
           '/': (BuildContext context) => RowCallScreen(),
           '/assignment': (BuildContext context) => AssignmentScreen(),
-          '/assignment_deliveries': (BuildContext context) => AssignmentDeliveriesScreen(),
+          '/assignment_deliveries': (BuildContext context) => AssignmentDeliveriesScreen(assignment: settings.arguments),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (ctx) => builder(ctx));

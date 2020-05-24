@@ -4,6 +4,9 @@ import 'package:FiapEx/models/assignment_model.dart';
 import 'package:flutter/material.dart';
 
 class AssignmentDeliveriesScreen extends StatefulWidget {
+  final AssignmentModel assignment;
+  const AssignmentDeliveriesScreen({Key key, this.assignment}) : super(key: key);
+
   @override
   _AssignmentDeliveriesScreenState createState() =>
       _AssignmentDeliveriesScreenState();
@@ -11,11 +14,9 @@ class AssignmentDeliveriesScreen extends StatefulWidget {
 
 class _AssignmentDeliveriesScreenState
     extends State<AssignmentDeliveriesScreen> {
-  AssignmentModel assignment;
 
   @override
   Widget build(BuildContext context) {
-    assignment = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBarFiapEx(
@@ -30,7 +31,8 @@ class _AssignmentDeliveriesScreenState
       )),
       drawer: DrawerFiapEx(),
       body: Container(
-        child: Text(assignment.subject),
+        color: Theme.of(context).accentColor,
+        child: Text(widget.assignment.subject),
       ),
     );
   }

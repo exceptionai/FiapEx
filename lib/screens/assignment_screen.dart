@@ -1,6 +1,7 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
+import 'package:FiapEx/repository/assignment_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,26 +13,10 @@ class AssignmentScreen extends StatefulWidget {
 }
 
 class _AssignmentScreenState extends State<AssignmentScreen> {
+  AssignmentRepository assignmentRepository = AssignmentRepository();
+
   @override
   Widget build(BuildContext context) {
-    /*TODO: Delete all until -DELETE UNTIL HERE- when assignmentRepository is ready.*/
-    List<AssignmentModel> assignments = List<AssignmentModel>();
-    assignments.add(AssignmentModel(
-        id: 1,
-        endDate: DateTime.now(),
-        observations: "blablabla",
-        subject: "Trabalho 1"));
-    assignments.add(AssignmentModel(
-        id: 2,
-        endDate: DateTime.now(),
-        observations: "blablabla",
-        subject: "Trabalho 2"));
-    assignments.add(AssignmentModel(
-        id: 3,
-        endDate: DateTime.now(),
-        observations: "blablabla",
-        subject: "Trabalho 3"));
-    /*-DELETE UNTIL HERE-*/
     return Scaffold(
       appBar: AppBarFiapEx(
           action: Padding(
@@ -46,9 +31,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
       drawer: DrawerFiapEx(),
       body: Container(
         color: Theme.of(context).accentColor,
-        child: buildListView(assignments),
-        /*TODO: change the child value to the following when assignmentRepository is ready: 
-        FutureBuilder<List>(
+        child: FutureBuilder<List>(
           future: assignmentRepository.findAll(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -65,7 +48,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               );
             }
           },
-        ),*/
+        ),
       ),
     );
   }
@@ -122,7 +105,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             size: 30.0,
           ),
           onTap: () {
-            Navigator.pushNamed(context, "/assignment_deliveries", arguments: assignment);
+            Navigator.of(context).pushReplacementNamed("/assignment_deliveries",
+                arguments: assignment);
           },
         ),
       ),
@@ -138,22 +122,50 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             Text(DateFormat("dd-MM-yyyy").format(assignment.endDate)),
           ],
         ),
-        Row(
-          children: <Widget>[
-            Text(
-                "Total de entregas: 0"), //TODO: trocar número por assignmentRepository.getDeliveries(assignment.id, "all");
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Text(
-                "Não avaliados: 0"), //TODO: trocar número por assignmentRepository.getDeliveries(assignment.id, "nonRated");
-            Text(" | "),
-            Text(
-                "Avaliados: 0"), //TODO: trocar número por assignmentRepository.getDeliveries(assignment.id, "rated");
-          ],
-        ),
+        buildCardSubtitleData(assignment.id, "all"),
+        buildCardSubtitleData(assignment.id, "nonRated"),
+        buildCardSubtitleData(assignment.id, "rated"),
       ],
     );
+  }
+
+  Widget buildCardSubtitleData(int assignmentId, String type) {
+    return FutureBuilder<int>(
+      future: assignmentRepository.getDeliveryAmount(assignmentId, type),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return getTextBasedOnType(type, snapshot.data);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Row getTextBasedOnType(String type, int amount) {
+    switch (type) {
+      case "all":
+        return Row(
+          children: <Widget>[
+            Text("Total de entregas: " + amount.toString()),
+          ],
+        );
+        break;
+      case "nonRated":
+        return Row(
+          children: <Widget>[
+            Text("Não avaliados: " + amount.toString()),
+          ],
+        );
+        break;
+      default:
+        return Row(
+          children: <Widget>[
+            Text("Avaliados: " + amount.toString()),
+          ],
+        );
+    }
   }
 }
