@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final assignmentModel = assignmentModelFromJson(jsonString);
+
 import 'dart:convert';
 
 class AssignmentModel {
@@ -5,12 +9,16 @@ class AssignmentModel {
     String subject;
     DateTime endDate;
     String observations;
+    int classId;
+    int disciplineId;
 
     AssignmentModel({
         this.id,
         this.subject,
         this.endDate,
         this.observations,
+        this.classId,
+        this.disciplineId,
     });
 
     factory AssignmentModel.fromJson(String str) => AssignmentModel.fromMap(json.decode(str));
@@ -22,6 +30,8 @@ class AssignmentModel {
         subject: json["subject"],
         endDate: DateTime.parse(json["endDate"]),
         observations: json["observations"],
+        classId: json["classId"],
+        disciplineId: json["disciplineId"],
     );
 
     Map<String, dynamic> toMap() => {
@@ -29,5 +39,7 @@ class AssignmentModel {
         "subject": subject,
         "endDate": endDate.toIso8601String(),
         "observations": observations,
+        "classId": classId,
+        "disciplineId": disciplineId,
     };
 }

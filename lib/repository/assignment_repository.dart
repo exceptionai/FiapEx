@@ -10,19 +10,25 @@ class AssignmentRepository {
         id: 1,
         endDate: DateTime.now(),
         observations: "blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla",
-        subject: "Trabalho 1"));
+        subject: "Trabalho 1",
+        classId: 1,
+        disciplineId: 1));
 
     assignments.add(AssignmentModel(
         id: 2,
         endDate: DateTime.now(),
         observations: "blablabla",
-        subject: "Trabalho 2"));
+        subject: "Trabalho 2",
+        classId: 1,
+        disciplineId: 1));
 
     assignments.add(AssignmentModel(
         id: 3,
         endDate: DateTime.now(),
         observations: "blablabla",
-        subject: "Trabalho 3"));
+        subject: "Trabalho 3",
+        classId: 2,
+        disciplineId: 2));
 
     return assignments;
   }

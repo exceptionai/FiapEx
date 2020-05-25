@@ -1,7 +1,11 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
+import 'package:FiapEx/models/class_model.dart';
+import 'package:FiapEx/models/discipline_model.dart';
 import 'package:FiapEx/repository/assignment_repository.dart';
+import 'package:FiapEx/repository/class_repository.dart';
+import 'package:FiapEx/repository/discipline_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +18,8 @@ class AssignmentScreen extends StatefulWidget {
 
 class _AssignmentScreenState extends State<AssignmentScreen> {
   AssignmentRepository assignmentRepository = AssignmentRepository();
+  ClassRepository classRepository = ClassRepository();
+  DisciplineRepository disciplineRepository = DisciplineRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -116,15 +122,71 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   Column assignmentCardSubtitle(AssignmentModel assignment) {
     return Column(
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text("Data limite para a entrega: "),
-            Text(DateFormat("dd-MM-yyyy").format(assignment.endDate)),
-          ],
-        ),
+        classRow(assignment.classId),
+        disciplineRow(assignment.disciplineId),
+        endDateRow(assignment.endDate),
         buildCardSubtitleData(assignment.id, "all"),
         buildCardSubtitleData(assignment.id, "nonRated"),
         buildCardSubtitleData(assignment.id, "rated"),
+      ],
+    );
+  }
+
+  Row disciplineRow(int disciplineId) {
+    return Row(
+      children: <Widget>[
+        FutureBuilder<DisciplineModel>(
+          future: disciplineRepository.getDiscipline(disciplineId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.data != null) {
+                return Text(snapshot.data.name);
+              } else {
+                return Center(
+                  child: Text("Sem disciplina"),
+                );
+              }
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Row classRow(int classId) {
+    return Row(
+      children: <Widget>[
+        FutureBuilder<ClassModel>(
+          future: classRepository.getClass(classId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.data != null) {
+                return Text(snapshot.data.name);
+              } else {
+                return Center(
+                  child: Text("Sem turma"),
+                );
+              }
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Row endDateRow(DateTime endDate) {
+    return Row(
+      children: <Widget>[
+        Text("Data limite para a entrega: "),
+        Text(DateFormat("dd-MM-yyyy").format(endDate)),
       ],
     );
   }
