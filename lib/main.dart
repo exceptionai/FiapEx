@@ -1,5 +1,5 @@
-import 'package:FiapEx/screens/Login/index.dart';
 import 'package:FiapEx/screens/assignment_screen.dart';
+import 'package:FiapEx/screens/login_screen.dart';
 import 'package:FiapEx/screens/row_call_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +14,17 @@ class MyApp extends StatelessWidget {
       title: 'Fiap Ex',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme:  TextTheme(
+          bodyText1: TextStyle(color: Colors.white),
+          headline1: TextStyle(color: Colors.white),
+          bodyText2: TextStyle(color: Colors.white,fontSize: 20),
+        ),
+        
         primaryColor: const Color(0xffED145B),
-        accentColor: const Color(0xff151819)
+        accentColor: const Color(0xff151819),
+        fontFamily: 'GothamHTF',
+        hintColor: Colors.white,
+      
       ),
       onGenerateRoute: (RouteSettings settings){
         switch (settings.name) {
@@ -35,6 +44,11 @@ class MyApp extends StatelessWidget {
             return MyCustomRoute(
               builder: (_) => LoginScreen(),
               settings: settings
+            );
+          default: 
+            return MaterialPageRoute(
+              builder: (_) => RowCallScreen(),
+              settings: settings,
             );
         }
       },
