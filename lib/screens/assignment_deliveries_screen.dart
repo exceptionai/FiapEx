@@ -1,12 +1,13 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
+import 'package:FiapEx/models/comment_model.dart';
 import 'package:FiapEx/models/delivery_model.dart';
 import 'package:FiapEx/repository/assignment_delivery_repository.dart';
 import 'package:FiapEx/repository/assignment_repository.dart';
+import 'package:FiapEx/repository/comment_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class AssignmentDeliveriesScreen extends StatefulWidget {
   final AssignmentModel assignment;
@@ -23,6 +24,9 @@ class _AssignmentDeliveriesScreenState
   AssignmentRepository assignmentRepository = AssignmentRepository();
   AssignmentDeliveryRepository assignmentDeliveryRepository =
       AssignmentDeliveryRepository();
+  CommentRepository commentRepository = CommentRepository();
+
+  DateFormat formatter = DateFormat("dd/MM/yyyy 'às' hh:mm:ss");
 
   final GlobalKey<FormState> observationsFormKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -48,29 +52,33 @@ class _AssignmentDeliveriesScreenState
           children: <Widget>[
             observationsForm(),
             Expanded(
-              child: FutureBuilder<List>(
-                future: assignmentDeliveryRepository
-                    .findDeliveriesByAssignmentId(widget.assignment.id),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.data.length > 0) {
-                      return buildDeliveriesListView(snapshot.data);
-                    } else {
-                      return Center(
-                        child: Text("Nenhuma entrega deste trabalho!"),
-                      );
-                    }
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+              child: deliveries(),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  FutureBuilder<List> deliveries() {
+    return FutureBuilder<List>(
+      future: assignmentDeliveryRepository
+          .findDeliveriesByAssignmentId(widget.assignment.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data.length > 0) {
+            return buildDeliveriesListView(snapshot.data);
+          } else {
+            return Center(
+              child: Text("Nenhuma entrega deste trabalho!"),
+            );
+          }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 
@@ -116,6 +124,24 @@ class _AssignmentDeliveriesScreenState
               children: <Widget>[
                 gradeForm(delivery),
                 gradeGivenDateText(delivery),
+                Text("Comentários:"),
+                FutureBuilder<List>(
+                  future:
+                      commentRepository.findCommentsByDeliveryId(delivery.id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data.length > 0) {
+                        return comments(snapshot.data);
+                      } else {
+                        return Text("Não há comentários.");
+                      }
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -124,11 +150,44 @@ class _AssignmentDeliveriesScreenState
     );
   }
 
+  Column comments(List<CommentModel> commentList) {
+    List<Row> comments = List<Row>();
+
+    for (int i = 0; i < comments.length; i++) {
+      comments.add(
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(commentList[i].message),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    formatter.format(commentList[i].date),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return Column(
+      children: comments,
+    );
+  }
+
   Text gradeGivenDateText(DeliveryModel delivery) {
     if (delivery.gradeGivenDate != null) {
-      return Text("Nota publicada: " +
-          DateFormat("dd/MM/yyyy 'às' hh:mm:ss")
-              .format(delivery.gradeGivenDate));
+      return Text(
+          "Nota publicada: " + formatter.format(delivery.gradeGivenDate));
     } else {
       return Text("A nota para esta entrega ainda não foi publicada.");
     }
@@ -237,6 +296,8 @@ class _AssignmentDeliveriesScreenState
                   assignmentDeliveryRepository.update(delivery);
 
                   showSnackBar('Nota salva com sucesso!');
+
+                  setState(() {});
                 }
               },
             ),
