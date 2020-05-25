@@ -26,7 +26,7 @@ class RowCallScreen extends StatelessWidget {
         body: Container(
           color: Color(0xff151819),
           padding: EdgeInsets.only(right: 17.0),
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Container(
                 color: Color(0xff151819),
@@ -85,13 +85,28 @@ class RowCallScreen extends StatelessWidget {
                 ),
               ),
               StudentRowCallTile(),
-              StudentRowCallTile(),
-              StudentRowCallTile(),
-              StudentRowCallTile(),
-              StudentRowCallTile(),
+              Padding(
+                padding: EdgeInsets.only(top: 30, bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ButtonTheme(
+                      buttonColor: Theme.of(context).primaryColor,
+                      child: RaisedButton(
+                          child: Text(
+                            "Finalizar Chamada",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                          onPressed: () {}),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ));
   }
 }
-
