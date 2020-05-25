@@ -1,7 +1,6 @@
 import 'package:FiapEx/models/assignment_model.dart';
 
 class AssignmentRepository {
-
   Future<List<AssignmentModel>> findAll() async {
     /*TODO: Change to db query*/
 

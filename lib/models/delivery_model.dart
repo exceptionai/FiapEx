@@ -7,7 +7,7 @@ import 'dart:convert';
 class DeliveryModel {
     int id;
     DateTime deliveryDate;
-    int grade;
+    double grade;
     DateTime gradeGivenDate;
     int assignmentId;
 

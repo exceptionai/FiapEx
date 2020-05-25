@@ -1,6 +1,8 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
+import 'package:FiapEx/models/delivery_model.dart';
+import 'package:FiapEx/repository/assignment_delivery_repository.dart';
 import 'package:FiapEx/repository/assignment_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,8 @@ class AssignmentDeliveriesScreen extends StatefulWidget {
 class _AssignmentDeliveriesScreenState
     extends State<AssignmentDeliveriesScreen> {
   AssignmentRepository assignmentRepository = AssignmentRepository();
+  AssignmentDeliveryRepository assignmentDeliveryRepository =
+      AssignmentDeliveryRepository();
 
   final GlobalKey<FormState> observationsFormKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -41,9 +45,70 @@ class _AssignmentDeliveriesScreenState
         child: Column(
           children: <Widget>[
             observationsForm(),
+            Expanded(
+              child: FutureBuilder<List>(
+                future: assignmentDeliveryRepository
+                    .findDeliveriesByAssignmentId(widget.assignment.id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.data.length > 0) {
+                      return buildDeliveriesListView(snapshot.data);
+                    } else {
+                      return Center(
+                        child: Text("Nenhuma entrega deste trabalho!"),
+                      );
+                    }
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  ListView buildDeliveriesListView(List<DeliveryModel> deliveries) {
+    return ListView.builder(
+      itemCount: deliveries == null ? 0 : deliveries.length,
+      itemBuilder: (BuildContext ctx, int index) {
+        return deliveryCard(deliveries[index]);
+      },
+    );
+  }
+
+  Card deliveryCard(DeliveryModel delivery) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Container(
+          child: ListTile(
+            title: gradeForm(delivery),
+          ),
+        ),
+      ),
+    );
+  }
+
+  ListView buildStudentsListView(
+      List<DeliveryModel> deliveries /*TODO: change to list of StudentModel*/) {
+    return ListView.builder(
+      itemCount: deliveries == null ? 0 : deliveries.length,
+      itemBuilder: (BuildContext ctx, int index) {
+        return studentRow(deliveries[index]);
+      },
+    );
+  }
+
+  Row studentRow(DeliveryModel delivery /*TODO: change to StudentModel*/) {
+    return Row(
+      children: <Widget>[
+        Text("RM NOME"),
+      ],
     );
   }
 
@@ -75,6 +140,53 @@ class _AssignmentDeliveriesScreenState
                   observationsFormKey.currentState.save();
 
                   assignmentRepository.update(widget.assignment);
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Form gradeForm(DeliveryModel delivery) {
+    final GlobalKey<FormState> gradeFormKey = new GlobalKey<FormState>();
+
+    return Form(
+      key: gradeFormKey,
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            initialValue: delivery.grade != null ? delivery.grade.toString() : '',
+            decoration: new InputDecoration(
+              icon: const Icon(Icons.text_fields),
+              hintText: 'Nota...',
+              labelText: 'Nota',
+            ),
+            validator: (value) {
+              if ((value.isEmpty)) {
+                return 'Digite uma nota!';
+              } else if (double.parse(value) < 0) {
+                return 'A nota mínima é 0!';
+              } else if (double.parse(value) > 10) {
+                return 'A nota máxima é 10!';
+              }
+
+              return null;
+            },
+            onSaved: (value) {
+              delivery.grade = double.parse(value);
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: RaisedButton(
+              child: Text("Salvar"),
+              onPressed: () {
+                if (gradeFormKey.currentState.validate()) {
+                  gradeFormKey.currentState.save();
+
+                  assignmentDeliveryRepository.update(delivery);
                 }
               },
             ),
