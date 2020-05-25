@@ -1,5 +1,6 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/tiles/student_row_call_tile.dart';
 import 'package:flutter/material.dart';
 
 class RowCallScreen extends StatelessWidget {
@@ -8,125 +9,103 @@ class RowCallScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarFiapEx(action: Padding(
-               padding: const EdgeInsets.all(8.0),
-               child: InkWell(
-                 child: Image.asset('assets/images/entregatrabalhos.png',
-                          height: 26),
-                onTap: (){
-                  Navigator.of(context).pushReplacementNamed('/assignment');
-                },
-              ),
-             )),
-      drawer: DrawerFiapEx(route: '/',),
-      body: Container(
-        
+        appBar: AppBarFiapEx(
+            action: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            child:
+                Icon(Icons.chevron_left,color: Theme.of(context).primaryColor,),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        )),
+        drawer: DrawerFiapEx(
+          route: '/',
+        ),
+        body: Container(
           color: Theme.of(context).accentColor,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            
+          padding: EdgeInsets.only(right: 17.0),
+          child: ListView(
             children: <Widget>[
-              SizedBox(height: 30,),
-              InkWell(
-                child: Text('Gabriel Lopes Pontes'),
-                onTap: (){
-                  _showModalStudent(context);
-                },
+              Container(
+                padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 17.0, 0, 17.0),
+                      child: Text(
+                        "LISTA DE CHAMADA",
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: 'GothamHTF',
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(17.0, 0, 0, 0),
+                      child: Text(
+                        "3° ANO - 3SIT - 2020",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontFamily: 'GothamHTF',
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xffED145B),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left:17.0, top:5.0, bottom: 30.0),
+                      child: Text(
+                        "DESENVOLVIMENTO CROSS PLATFORM",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontFamily: 'GothamHTF',
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              StudentRowCallTile(),
+              Padding(
+                padding: EdgeInsets.only(top: 30, bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ButtonTheme(
+                      buttonColor: Theme.of(context).primaryColor,
+                      child: RaisedButton(
+                          child: Text(
+                            "Finalizar Chamada",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                          onPressed: () {}),
+                    ),
+                  ],
+                ),
               ),
             ],
-          )
-      ),
-    );
+          ),
+        ));
   }
 
-  _showModalStudent(BuildContext context){
-    showModalBottomSheet(context: context,
-      shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30)
-      ),
-           
-    ),backgroundColor: Theme.of(context).accentColor, builder: (BuildContext context){
-      return Container(
-        height: 800,
-        padding: EdgeInsets.all(15.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColor),
-
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-                image: DecorationImage(
-                  image: AssetImage('assets/images/students/lopes.jpeg'),
-                  fit: BoxFit.cover
-
-                )
-              ),
-            ),
-            SizedBox(height: 20,),
-            Text('GABRIEL LOPES PONTES'),
-            SizedBox(height: 25,),
-            Row(
-              children: <Widget>[
-                SizedBox(width: 15,),
-                Text('Presença: '),
-                SizedBox(width: 10,),
-                Text('2 ',style: TextStyle(color: Colors.greenAccent,fontWeight: FontWeight.bold),),
-                
-                SizedBox(width: 40,),
-                Text('Ausência: '),
-                SizedBox(width: 10,),
-                Text('35 ',style: TextStyle(color: Colors.redAccent,fontWeight: FontWeight.bold),),
-                
-              ],
-            ),
-            SizedBox(height: 15,),
-            Row(
-              children: <Widget>[
-                SizedBox(width: 15,),
-                Text('Status Atual: '),
-                SizedBox(width: 40,),
-                Image.asset('assets/images/pendenteicone.png',width: 35,),
-                SizedBox(width: 10,),
-                Text('Pendente '),
-
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                
-                FlatButton(
-                  padding: EdgeInsets.zero,
-                  child: Image.asset('assets/images/presenteicone.png',width: 35,),
-                  onPressed: (){
-
-                    // TODO: service/repository set as present
-
-                    Navigator.of(context).pop();
-                  },
-                ),
-                FlatButton(
-                  padding: EdgeInsets.zero,
-                  child: Image.asset('assets/images/ausenteicone.png',width: 35,),
-                  onPressed: (){
-
-                    // TODO: service/repository set as absent
-
-                    Navigator.of(context).pop();
-                    
-                  },
-                ),
-              ],
-            )
-
-          ],
-        ),
-      );
-    });
-  }
+  
 }

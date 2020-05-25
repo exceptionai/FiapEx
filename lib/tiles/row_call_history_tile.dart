@@ -11,7 +11,7 @@ class RowCallHistoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: (){
-        Navigator.of(context).pushReplacementNamed('/rowcall');
+        Navigator.of(context).pushNamed('/rowcall');
       },
       title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
