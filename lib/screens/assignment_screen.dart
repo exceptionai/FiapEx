@@ -8,17 +8,19 @@ class AssignmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarFiapEx(action: Padding(
-               padding: const EdgeInsets.all(8.0),
-               child: InkWell(
-                 child: Image.asset('assets/images/pendenteicone.png',
-                          height: 26),
-                onTap: (){
-                  Navigator.of(context).pushReplacementNamed('/');
-                },
-              ),
-             )),
-      drawer: DrawerFiapEx(),
+      appBar: AppBarFiapEx(
+        action: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Image.asset('assets/images/pendenteicone.png',
+                      height: 26),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
+        )
+      ),
+      drawer: DrawerFiapEx(route: '/assignment'),
       body: Container(
           color: Theme.of(context).accentColor,
       ),
