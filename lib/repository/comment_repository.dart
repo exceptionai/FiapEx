@@ -1,6 +1,7 @@
 import 'package:FiapEx/models/comment_model.dart';
 
 class CommentRepository {
+
   Future<List<CommentModel>> findCommentsByDeliveryId(int deliveryId) async {
     /*TODO: change to db query*/
 
@@ -25,5 +26,10 @@ class CommentRepository {
     }
 
     return comments;
+  }
+
+  Future<int> create(CommentModel comment) async {
+    /*TODO: change to db query*/
+    return 1;
   }
 }

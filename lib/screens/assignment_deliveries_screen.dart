@@ -131,7 +131,38 @@ class _AssignmentDeliveriesScreenState
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.data.length > 0) {
-                        return comments(snapshot.data);
+                        List<Row> comments = List<Row>();
+
+                        for (int i = 0; i < snapshot.data.length; i++) {
+                          comments.add(
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(snapshot.data[i].message),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        formatter.format(snapshot.data[i].date),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return Column(
+                          children: comments,
+                        );
                       } else {
                         return Text("Não há comentários.");
                       }
@@ -142,45 +173,12 @@ class _AssignmentDeliveriesScreenState
                     }
                   },
                 ),
+                commentForm(delivery.id),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Column comments(List<CommentModel> commentList) {
-    List<Row> comments = List<Row>();
-
-    for (int i = 0; i < comments.length; i++) {
-      comments.add(
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(commentList[i].message),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    formatter.format(commentList[i].date),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    return Column(
-      children: comments,
     );
   }
 
@@ -233,14 +231,14 @@ class _AssignmentDeliveriesScreenState
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: RaisedButton(
-              child: Text("Salvar"),
+              child: Text("Salvar observações"),
               onPressed: () {
                 if (observationsFormKey.currentState.validate()) {
                   observationsFormKey.currentState.save();
 
                   assignmentRepository.update(widget.assignment);
 
-                  showSnackBar('Observação salva com sucesso!');
+                  showSnackBar('Observações salvas com sucesso!');
 
                   setState(() {});
                 }
@@ -286,7 +284,7 @@ class _AssignmentDeliveriesScreenState
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: RaisedButton(
-              child: Text("Salvar"),
+              child: Text("Avaliar"),
               onPressed: () {
                 if (gradeFormKey.currentState.validate()) {
                   delivery.gradeGivenDate = DateTime.now();
@@ -296,6 +294,57 @@ class _AssignmentDeliveriesScreenState
                   assignmentDeliveryRepository.update(delivery);
 
                   showSnackBar('Nota salva com sucesso!');
+
+                  setState(() {});
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Form commentForm(int deliveryId) {
+    final GlobalKey<FormState> commentFormKey = new GlobalKey<FormState>();
+
+    CommentModel comment = CommentModel();
+
+    return Form(
+      key: commentFormKey,
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            decoration: new InputDecoration(
+              icon: const Icon(Icons.text_fields),
+              hintText: 'Adicione um comentário...',
+              labelText: 'Comentário',
+            ),
+            validator: (value) {
+              if ((value.isEmpty)) {
+                return 'Digite um comentário!';
+              }
+
+              return null;
+            },
+            keyboardType: TextInputType.text,
+            onSaved: (value) {
+              comment.message = value;
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: RaisedButton(
+              child: Text("Postar"),
+              onPressed: () {
+                if (commentFormKey.currentState.validate()) {
+                  comment.date = DateTime.now();
+
+                  commentFormKey.currentState.save();
+
+                  commentRepository.create(comment);
+
+                  showSnackBar('Comentário publicado com sucesso!');
 
                   setState(() {});
                 }
