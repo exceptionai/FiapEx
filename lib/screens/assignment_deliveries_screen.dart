@@ -127,6 +127,7 @@ class _AssignmentDeliveriesScreenState
             validator: (value) {
               return null;
             },
+            keyboardType: TextInputType.text,
             onSaved: (value) {
               widget.assignment.observations = value;
             },
@@ -140,6 +141,8 @@ class _AssignmentDeliveriesScreenState
                   observationsFormKey.currentState.save();
 
                   assignmentRepository.update(widget.assignment);
+
+                  showSnackBar('Observação salva com sucesso!');
                 }
               },
             ),
@@ -157,7 +160,8 @@ class _AssignmentDeliveriesScreenState
       child: Column(
         children: <Widget>[
           TextFormField(
-            initialValue: delivery.grade != null ? delivery.grade.toString() : '',
+            initialValue:
+                delivery.grade != null ? delivery.grade.toString() : '',
             decoration: new InputDecoration(
               icon: const Icon(Icons.text_fields),
               hintText: 'Nota...',
@@ -174,6 +178,7 @@ class _AssignmentDeliveriesScreenState
 
               return null;
             },
+            keyboardType: TextInputType.number,
             onSaved: (value) {
               delivery.grade = double.parse(value);
             },
@@ -187,11 +192,23 @@ class _AssignmentDeliveriesScreenState
                   gradeFormKey.currentState.save();
 
                   assignmentDeliveryRepository.update(delivery);
+
+                  showSnackBar('Nota salva com sucesso!');
                 }
               },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  showSnackBar(String text) {
+    scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        content: Text(
+          text,
+        ),
       ),
     );
   }
