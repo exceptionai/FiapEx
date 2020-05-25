@@ -211,6 +211,8 @@ class _AssignmentDeliveriesScreenState
               child: Text("Salvar"),
               onPressed: () {
                 if (gradeFormKey.currentState.validate()) {
+                  delivery.gradeGivenDate = DateTime.now();
+
                   gradeFormKey.currentState.save();
 
                   assignmentDeliveryRepository.update(delivery);
