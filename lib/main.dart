@@ -1,6 +1,7 @@
 import 'package:FiapEx/screens/assignment_deliveries_screen.dart';
 import 'package:FiapEx/screens/assignment_screen.dart';
 import 'package:FiapEx/screens/row_call_screen.dart';
+import 'package:FiapEx/screens/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
