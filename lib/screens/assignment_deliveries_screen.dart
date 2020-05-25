@@ -74,6 +74,7 @@ class _AssignmentDeliveriesScreenState
 
   ListView buildDeliveriesListView(List<DeliveryModel> deliveries) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: deliveries == null ? 0 : deliveries.length,
       itemBuilder: (BuildContext ctx, int index) {
         return deliveryCard(deliveries[index]);
@@ -87,29 +88,50 @@ class _AssignmentDeliveriesScreenState
         padding: EdgeInsets.all(12.0),
         child: Container(
           child: ListTile(
-            title: gradeForm(delivery),
+            title: Container(
+              child: Column(
+                children: <Widget>[
+                  Text("Integrantes: "),
+                  FutureBuilder<List>(
+                    future: assignmentDeliveryRepository
+                        .findStudentsByDeliveryId(delivery.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Row(
+                          children: <Widget>[studentsString(snapshot.data)],
+                        );
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            subtitle: gradeForm(delivery),
           ),
         ),
       ),
     );
   }
 
-  ListView buildStudentsListView(
-      List<DeliveryModel> deliveries /*TODO: change to list of StudentModel*/) {
-    return ListView.builder(
-      itemCount: deliveries == null ? 0 : deliveries.length,
-      itemBuilder: (BuildContext ctx, int index) {
-        return studentRow(deliveries[index]);
-      },
-    );
-  }
+  Text studentsString(
+      List<DeliveryModel> students /*TODO: change to StudentModel*/) {
+    String studentsString = "";
 
-  Row studentRow(DeliveryModel delivery /*TODO: change to StudentModel*/) {
-    return Row(
-      children: <Widget>[
-        Text("RM NOME"),
-      ],
-    );
+    for (int i = 0; i < students.length; i++) {
+      studentsString += "Pedro"; /*TODO: change to students[i].name*/
+
+      if (i + 1 < students.length) {
+        studentsString += ", ";
+      } else {
+        studentsString += ".";
+      }
+    }
+
+    return Text(studentsString);
   }
 
   Form observationsForm() {
