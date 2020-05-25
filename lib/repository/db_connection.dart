@@ -40,7 +40,7 @@ class DbConnection {
     "tableName" : "rolls",
     "idColumn" : "idRoll",
     "dateColumn" : "date",
-    "DoneColumn" : "done",
+    "doneColumn" : "done",
     "fkClassColumn" : "idClass",
     "fkDisciplineColumn" : "idDiscipline" 
   };
@@ -103,7 +103,7 @@ class DbConnection {
       """CREATE TABLE ${rollTable["tableName"]}(
          ${rollTable["idColumn"]} INTEGER PRIMARY KEY,
          ${rollTable["dateColumn"]} TEXT,
-         ${rollTable["DoneColumn"]} TEXT,
+         ${rollTable["doneColumn"]} TEXT,
          ${rollTable["fkClassColumn"]} INTEGER,
          ${rollTable["fkDisciplineColumn"]} INTEGER,
          FOREIGN KEY (${rollTable["fkClassColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}),

@@ -1,50 +1,50 @@
+import 'package:FiapEx/models/roll_model.dart';
 import 'package:FiapEx/repository/db_connection.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../models/class_model.dart';
 
-class ClassRepository{
+class RollRepository{
 
   final DbConnection dbConnection = DbConnection();
-  final String table = DbConnection.classTable["tableName"];
-  final String idColumn = DbConnection.classTable["idColumn"];
-  final String nameColumn = DbConnection.classTable["nameColumn"];
+  final String table = DbConnection.rollTable["tableName"];
+  final String idColumn = DbConnection.rollTable["idColumn"];
+  final String nameColumn = DbConnection.rollTable["nameColumn"];
 
-  Future<List> getAllClasses() async {
+  Future<List> getAllRolles() async {
     Database db = await dbConnection.db;
     List listMap = await db.rawQuery("SELECT * FROM $table;");
-    List<ClassModel> listModel = List();
+    List<RollModel> listModel = List();
     for(Map m in listMap){
-      listModel.add(ClassModel.fromMap(m));
+      listModel.add(RollModel.fromMap(m));
     }
     return listModel;
   }
 
-  Future<ClassModel> saveClass(ClassModel model) async {
+  Future<RollModel> saveRoll(RollModel model) async {
     Database db = await dbConnection.db;
     model.id = await db.insert(table, model.toMap());
     return model;
   }
 
-  Future<ClassModel> getClass(int id) async {
+  Future<RollModel> getRoll(int id) async {
     Database db = await dbConnection.db;
     List<Map> maps = await db.query(table,
       columns: [idColumn, nameColumn],
       where: "$idColumn = ?",
       whereArgs: [id]);
     if(maps.length > 0){
-      return ClassModel.fromMap(maps.first);
+      return RollModel.fromMap(maps.first);
     } else {
       return null;
     }
   }
 
-  Future<int> deleteClass(int id) async {
+  Future<int> deleteRoll(int id) async {
     Database db = await dbConnection.db;
     return await db.delete(table, where: "$idColumn = ?", whereArgs: [id]);
   }
 
-  Future<int> updateClass(ClassModel model) async {
+  Future<int> updateRoll(RollModel model) async {
     Database db = await dbConnection.db;
     return await db.update(table,
         model.toMap(),

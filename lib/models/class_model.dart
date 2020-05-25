@@ -1,11 +1,12 @@
-import 'package:FiapEx/repository/db_conection.dart';
+
+import 'package:FiapEx/repository/db_connection.dart';
 
 class ClassModel{
   
   int id;
   String name;
-  final String idColumn = DbConection.classTable["idColumn"];
-  final String nameColumn = DbConection.classTable["nameColumn"];
+  final String idColumn = DbConnection.classTable["idColumn"];
+  final String nameColumn = DbConnection.classTable["nameColumn"];
 
   ClassModel();
 
