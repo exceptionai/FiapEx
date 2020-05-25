@@ -162,19 +162,4 @@ class DrawerFiapEx extends StatelessWidget {
     }
     return Colors.white;
   }
-
-  Widget _headerTitle(String title) {
-    return Positioned(
-      top: 8.0,
-      left: 0.0,
-      child: Text(
-        title,
-        style: TextStyle(
-            fontSize: 34.0,
-            fontFamily: 'GothamHTF',
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
-      ),
-    );
-  }
 }

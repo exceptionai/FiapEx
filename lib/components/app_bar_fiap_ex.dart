@@ -1,4 +1,3 @@
-import 'package:FiapEx/components/drawer_fiap_ex.dart';
 import 'package:flutter/material.dart';
 
 class AppBarFiapEx extends StatelessWidget implements PreferredSizeWidget{

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SignIn extends StatelessWidget {
-  SignIn();
+class SignInFiapEx extends StatelessWidget {
+  SignInFiapEx();
   @override
   Widget build(BuildContext context) {
     return (Container(

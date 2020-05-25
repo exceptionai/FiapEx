@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class StaggerAnimation extends StatelessWidget {
-  StaggerAnimation({Key key, this.buttonController})
+class LoginAnimation extends StatelessWidget {
+  LoginAnimation({Key key, this.buttonController})
       : buttonSqueezeanimation = Tween(
           begin: 320.0,
           end: 70.0,
