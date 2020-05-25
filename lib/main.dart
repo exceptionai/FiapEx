@@ -1,5 +1,6 @@
 import 'package:FiapEx/screens/assignment_screen.dart';
 import 'package:FiapEx/screens/login_screen.dart';
+import 'package:FiapEx/screens/row_call_history_screen.dart';
 import 'package:FiapEx/screens/row_call_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme:  TextTheme(
           bodyText1: TextStyle(color: Colors.white),
+          subtitle1:  TextStyle(color: Colors.white,fontSize: 20),
+          subtitle2:  TextStyle(color: Colors.white,fontSize: 18),
           headline1: TextStyle(color: Colors.white),
           bodyText2: TextStyle(color: Colors.white,fontSize: 20),
         ),
@@ -36,8 +39,14 @@ class MyApp extends StatelessWidget {
 
           case '/':
             return MaterialPageRoute(
-              builder: (_) => RowCallScreen(),
+              builder: (_) => RowCallHistoryScreen(),
               settings: settings,
+            );
+
+          case '/rowcall':
+            return MyCustomRoute(
+              builder: (_) => RowCallScreen(),
+              settings: settings
             );
 
           case '/login':
