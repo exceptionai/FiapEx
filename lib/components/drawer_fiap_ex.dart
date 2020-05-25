@@ -23,23 +23,35 @@ class DrawerFiapEx extends StatelessWidget {
     return SafeArea(
       child: Stack(
         children: [
-          Positioned(
-            right: 15,
-            top: 30,
-            child: Icon(
-              Icons.exit_to_app,
-              size: 30,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
           ListView(
             padding: EdgeInsets.only(left: 16, right: 16, top: 30),
             children: <Widget>[
               Column(children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage: AssetImage('assets/images/profilepic.jpg'),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(left:20.0),
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundImage: AssetImage('assets/images/profilepic.jpg'),
+                    ),
+                  ),  
+                  Spacer(),
+                  InkWell(
+                    onTap: (){
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
+                    child: Icon(
+                          Icons.exit_to_app,
+                          size: 30,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                  ),
+                ],),
+
+                
                 SizedBox(
                   height: 10,
                 ),
