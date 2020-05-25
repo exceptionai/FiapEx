@@ -13,7 +13,7 @@ class AssignmentDeliveryRepository {
         assignmentId: 1,
         deliveryDate: DateTime.now(),
         grade: null,
-        gradeGivenDate: DateTime.now(),
+        gradeGivenDate: null,
       ),
     );
 

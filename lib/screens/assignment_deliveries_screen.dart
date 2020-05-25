@@ -5,6 +5,8 @@ import 'package:FiapEx/models/delivery_model.dart';
 import 'package:FiapEx/repository/assignment_delivery_repository.dart';
 import 'package:FiapEx/repository/assignment_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class AssignmentDeliveriesScreen extends StatefulWidget {
   final AssignmentModel assignment;
@@ -110,11 +112,26 @@ class _AssignmentDeliveriesScreenState
                 ],
               ),
             ),
-            subtitle: gradeForm(delivery),
+            subtitle: Column(
+              children: <Widget>[
+                gradeForm(delivery),
+                gradeGivenDateText(delivery),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Text gradeGivenDateText(DeliveryModel delivery) {
+    if (delivery.gradeGivenDate != null) {
+      return Text("Nota publicada: " +
+          DateFormat("dd/MM/yyyy 'às' hh:mm:ss")
+              .format(delivery.gradeGivenDate));
+    } else {
+      return Text("A nota para esta entrega ainda não foi publicada.");
+    }
   }
 
   Text studentsString(
@@ -165,6 +182,8 @@ class _AssignmentDeliveriesScreenState
                   assignmentRepository.update(widget.assignment);
 
                   showSnackBar('Observação salva com sucesso!');
+
+                  setState(() {});
                 }
               },
             ),
