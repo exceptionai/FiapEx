@@ -4,12 +4,20 @@
 
 import 'dart:convert';
 
+import 'package:FiapEx/repository/db_connection.dart';
+
 class DeliveryModel {
     int id;
     DateTime deliveryDate;
     double grade;
     DateTime gradeGivenDate;
     int assignmentId;
+
+    final String idColumn = DbConnection.classTable["idColumn"];
+    final String deliveryDateColumn = DbConnection.classTable["deliveryDateColumn"];
+    final String gradeColumn = DbConnection.classTable["gradeColumn"];
+    final String gradeGivenDateColumn = DbConnection.classTable["gradeGivenDateColumn"];
+    final String assignmentIdColumn = DbConnection.classTable["assignmentIdColumn"];
 
     DeliveryModel({
         this.id,
@@ -27,7 +35,7 @@ class DeliveryModel {
         id: json["id"],
         deliveryDate: DateTime.parse(json["deliveryDate"]),
         grade: json["grade"],
-        gradeGivenDate: DateTime.parse(json["gradeGivenDate"]),
+        gradeGivenDate: json["gradeGivenDate"] != null ? DateTime.parse(json["gradeGivenDate"]) : null,
         assignmentId: json["assignmentId"],
     );
 

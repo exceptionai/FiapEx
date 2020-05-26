@@ -32,6 +32,7 @@ class AssignmentRepository {
   }
 
   Future<int> getDeliveryAmount(int assignmentId, String type) async {
+
     if (type == "all") {
       return 0; /*TODO: Change to db query*/
     } else if (type == "nonRated") {

@@ -62,6 +62,15 @@ class DbConnection {
     "fkDisciplineIdColumn" : "disciplineId"
   };
 
+  static final deliveryTable = {
+    "tableName" : "deliveries",
+    "idColumn" : "id",
+    "deliveryDateColumn" : "deliveryDate",
+    "gradeColumn" : "grade",
+    "gradeGivenDateColumn" : "gradeGivenDate",
+    "fkAssignmentIdColumn" : "assignmentId"
+  };
+
   DbConnection();
   /*static final Repository _instance = Repository.internal();
 
@@ -133,6 +142,13 @@ class DbConnection {
         ${assignmentTable["fkDisciplineIdColumn"]} INTEGER,
         FOREIGN KEY (${assignmentTable["fkClassIdColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}),
         FOREIGN KEY (${assignmentTable["fkDisciplineIdColumn"]}) references ${disciplineTable["tableName"]} (${disciplineTable["idColumn"]}));""",
+      """CREATE TABLE ${deliveryTable["tableName"]}(
+        ${deliveryTable["idColumn"]} INTEGER PRIMARY KEY,
+        ${deliveryTable["deliveryDateColumn"]} TEXT,
+        ${deliveryTable["gradeColumn"]} REAL,
+        ${deliveryTable["gradeGivenDateColumn"]} TEXT,
+        ${deliveryTable["fkAssignmentIdColumn"]} INTEGER,
+        FOREIGN KEY (${deliveryTable["fkAssignmentIdColumn"]}) references ${assignmentTable["tableName"]} (${assignmentTable["idColumn"]}));""",
     ];
 
     List<String> inserts = [
@@ -212,6 +228,42 @@ class DbConnection {
         ${assignmentTable["observationsColumn"]},
         ${assignmentTable["fkClassIdColumn"]},
         ${assignmentTable["fkDisciplineIdColumn"]}) values (3, 'Chamada e entrega de trabalhos da FIAP', '2020-07-11T23:59:59.999Z', 'Métodos de consulta assíncronos (mandatório)', 1, 1);""",
+      """INSERT INTO ${deliveryTable["tableName"]} (
+        ${deliveryTable["idColumn"]},
+        ${deliveryTable["deliveryDateColumn"]},
+        ${deliveryTable["gradeColumn"]},
+        ${deliveryTable["gradeGivenDateColumn"]},
+        ${deliveryTable["fkAssignmentIdColumn"]}) values (1, '2020-05-29T22:59:59.999Z', NULL, NULL, 1);""",
+      """INSERT INTO ${deliveryTable["tableName"]} (
+        ${deliveryTable["idColumn"]},
+        ${deliveryTable["deliveryDateColumn"]},
+        ${deliveryTable["gradeColumn"]},
+        ${deliveryTable["gradeGivenDateColumn"]},
+        ${deliveryTable["fkAssignmentIdColumn"]}) values (2, '2020-05-28T20:19:59.999Z', 5, '2020-05-30T20:20:59.999Z', 1);""",
+      """INSERT INTO ${deliveryTable["tableName"]} (
+        ${deliveryTable["idColumn"]},
+        ${deliveryTable["deliveryDateColumn"]},
+        ${deliveryTable["gradeColumn"]},
+        ${deliveryTable["gradeGivenDateColumn"]},
+        ${deliveryTable["fkAssignmentIdColumn"]}) values (3, '2020-05-30T22:59:59.999Z', NULL, NULL, 2);""",
+      """INSERT INTO ${deliveryTable["tableName"]} (
+        ${deliveryTable["idColumn"]},
+        ${deliveryTable["deliveryDateColumn"]},
+        ${deliveryTable["gradeColumn"]},
+        ${deliveryTable["gradeGivenDateColumn"]},
+        ${deliveryTable["fkAssignmentIdColumn"]}) values (4, '2020-05-28T20:19:59.999Z', 5, '2020-05-30T18:20:59.999Z', 2);""",
+      """INSERT INTO ${deliveryTable["tableName"]} (
+        ${deliveryTable["idColumn"]},
+        ${deliveryTable["deliveryDateColumn"]},
+        ${deliveryTable["gradeColumn"]},
+        ${deliveryTable["gradeGivenDateColumn"]},
+        ${deliveryTable["fkAssignmentIdColumn"]}) values (5, '2020-05-30T22:59:59.999Z', NULL, NULL, 3);""",
+      """INSERT INTO ${deliveryTable["tableName"]} (
+        ${deliveryTable["idColumn"]},
+        ${deliveryTable["deliveryDateColumn"]},
+        ${deliveryTable["gradeColumn"]},
+        ${deliveryTable["gradeGivenDateColumn"]},
+        ${deliveryTable["fkAssignmentIdColumn"]}) values (6, '2020-05-29T20:19:59.999Z', 5, '2020-05-30T19:20:59.999Z', 3);""",
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {
