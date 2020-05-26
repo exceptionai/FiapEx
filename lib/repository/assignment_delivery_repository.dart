@@ -30,29 +30,6 @@ class AssignmentDeliveryRepository {
     return listModel;
   }
   Future<List<StudentModel>> findStudentsByDeliveryId(int id) async {
-    /*List<DeliveryModel> deliveries = List<DeliveryModel>();
-
-    deliveries.add(
-      DeliveryModel(
-        id: 1,
-        assignmentId: 1,
-        deliveryDate: DateTime.now(),
-        grade: null,
-        gradeGivenDate: DateTime.now(),
-      ),
-    );
-
-    deliveries.add(
-      DeliveryModel(
-        id: 2,
-        assignmentId: 2,
-        deliveryDate: DateTime.now(),
-        grade: 3,
-        gradeGivenDate: DateTime.now(),
-      ),
-    );
-
-    return deliveries;*/
     Database db = await dbConnection.db;
     List listMap = await db.rawQuery("SELECT * FROM $deliveryStudentTable AS ds JOIN $studentTable AS s ON(s.$rm = ds.$deliveryStudentTableRm) WHERE deliveryId = $id;");
     List<StudentModel> listModel = List();
@@ -62,10 +39,12 @@ class AssignmentDeliveryRepository {
     return listModel;
   }
 
-  Future<int> update(DeliveryModel deliveryModel) async {
-    /* TODO: change to db query */
-
-    return 1;
+  Future<int> update(DeliveryModel model) async {
+    Database db = await dbConnection.db;
+    return await db.update(table,
+        model.toMap(),
+        where: "$idColumn = ?",
+        whereArgs: [model.id]);
   }
 
 }
