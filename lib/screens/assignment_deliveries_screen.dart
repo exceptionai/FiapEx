@@ -120,6 +120,7 @@ class _AssignmentDeliveriesScreenState
             ),
             subtitle: Column(
               children: <Widget>[
+                deliveryDateRow(delivery),
                 gradeForm(delivery),
                 gradeGivenDateText(delivery),
                 Text("Comentários:"),
@@ -178,6 +179,12 @@ class _AssignmentDeliveriesScreenState
         ),
       ),
     );
+  }
+
+  Row deliveryDateRow(DeliveryModel delivery) {
+    return Row(children: <Widget>[
+      Text("Entregue: " + formatter.format(delivery.deliveryDate))
+    ],);
   }
 
   Text gradeGivenDateText(DeliveryModel delivery) {
