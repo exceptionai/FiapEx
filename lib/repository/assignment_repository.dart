@@ -6,6 +6,7 @@ import 'db_connection.dart';
 class AssignmentRepository {
   final DbConnection dbConnection = DbConnection();
   final String table = DbConnection.assignmentTable["tableName"];
+  final String deliveryTable = DbConnection.deliveryTable["tableName"];
   final String idColumn = DbConnection.assignmentTable["idColumn"];
   final String subjectColumn = DbConnection.assignmentTable["subjectColumn"];
   final String endDateColumn = DbConnection.assignmentTable["endDateColumn"];
@@ -33,12 +34,14 @@ class AssignmentRepository {
 
   Future<int> getDeliveryAmount(int assignmentId, String type) async {
 
+    Database db = await dbConnection.db;
+
     if (type == "all") {
-      return 0; /*TODO: Change to db query*/
+      return Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(id) FROM $deliveryTable WHERE assignmentId = $assignmentId"));
     } else if (type == "nonRated") {
-      return 0; /*TODO: Change to db query*/
+      return Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(id) FROM $deliveryTable WHERE assignmentId = $assignmentId AND grade IS NULL"));
     } else {
-      return 0; /*TODO: Change to db query*/
+      return Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(id) FROM $deliveryTable WHERE assignmentId = $assignmentId AND grade IS NOT NULL"));
     }
   }
 }
