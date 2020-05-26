@@ -124,60 +124,62 @@ class _AssignmentDeliveriesScreenState
                 gradeForm(delivery),
                 gradeGivenDateText(delivery),
                 Text("Comentários:"),
-                FutureBuilder<List>(
-                  future:
-                      commentRepository.findCommentsByDeliveryId(delivery.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data.length > 0) {
-                        List<Row> comments = List<Row>();
-
-                        for (int i = 0; i < snapshot.data.length; i++) {
-                          comments.add(
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(snapshot.data[i].message),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        formatter.format(snapshot.data[i].date),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                        return Column(
-                          children: comments,
-                        );
-                      } else {
-                        return Text("Não há comentários.");
-                      }
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
+                comments(delivery.id),
                 commentForm(delivery.id),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  FutureBuilder<List<CommentModel>> comments(int deliveryId) {
+    return FutureBuilder<List<CommentModel>>(
+      future: commentRepository.findCommentsByDeliveryId(deliveryId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data.length > 0) {
+            List<Row> comments = List<Row>();
+
+            for (int i = 0; i < snapshot.data.length; i++) {
+              comments.add(
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(snapshot.data[i].message),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            formatter.format(snapshot.data[i].date),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return Column(
+              children: comments,
+            );
+          } else {
+            return Text("Não há comentários.");
+          }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 
