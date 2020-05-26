@@ -38,7 +38,6 @@ class LoginScreenState extends State<LoginScreen>
     } on TickerCanceled {}
   }
 
-
   @override
   Widget build(BuildContext context) {
     timeDilation = 0.4;
