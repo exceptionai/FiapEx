@@ -52,6 +52,16 @@ class DbConnection {
     "presenceColumn" : "presence"
   };
 
+  static final assignmentTable = {
+    "tableName" : "assignments",
+    "idColumn" : "id",
+    "subjectColumn" : "subject",
+    "endDateColumn" : "endDate",
+    "observationsColumn" : "observations",
+    "fkClassIdColumn" : "classId",
+    "fkDisciplineIdColumn" : "disciplineId"
+  };
+
   DbConnection();
   /*static final Repository _instance = Repository.internal();
 
@@ -114,6 +124,15 @@ class DbConnection {
          ${rollRegisterTable["presenceColumn"]} TEXT,
          FOREIGN KEY (${rollRegisterTable["fkStudentColumn"]}) references ${studentTable["tableName"]} (${studentTable["idColumn"]}),
          FOREIGN KEY (${rollRegisterTable["fkRollColumn"]}) references ${rollTable["tableName"]} (${rollTable["idColumn"]}));""",
+      """CREATE TABLE ${assignmentTable["tableName"]}(
+        ${assignmentTable["idColumn"]} INTEGER PRIMARY KEY,
+        ${assignmentTable["subjectColumn"]} TEXT,
+        ${assignmentTable["endDateColumn"]} TEXT,
+        ${assignmentTable["observationsColumn"]} TEXT,
+        ${assignmentTable["fkClassIdColumn"]} INTEGER,
+        ${assignmentTable["fkDisciplineIdColumn"]} INTEGER,
+        FOREIGN KEY (${assignmentTable["fkClassIdColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}),
+        FOREIGN KEY (${assignmentTable["fkDisciplineIdColumn"]}) references ${disciplineTable["tableName"]} (${disciplineTable["idColumn"]}));""",
     ];
 
     List<String> inserts = [
@@ -172,6 +191,27 @@ class DbConnection {
          ${studentTable["nameColumn"]},
          ${studentTable["classFkColumn"]},
          ${studentTable["imgUrlColumn"]}) VALUES (5,'Celso Portiolli',1,'celso-portiolli.jpg');""", 
+      """INSERT INTO ${assignmentTable["tableName"]} (
+        ${assignmentTable["idColumn"]},
+        ${assignmentTable["subjectColumn"]},
+        ${assignmentTable["endDateColumn"]},
+        ${assignmentTable["observationsColumn"]},
+        ${assignmentTable["fkClassIdColumn"]},
+        ${assignmentTable["fkDisciplineIdColumn"]}) values (1, 'Lista e Detalhes', '2020-06-20T23:59:59.999Z', 'uma observação muito muito muito muito muito muito muito grande', 1, 1);""",
+      """INSERT INTO ${assignmentTable["tableName"]} (
+        ${assignmentTable["idColumn"]},
+        ${assignmentTable["subjectColumn"]},
+        ${assignmentTable["endDateColumn"]},
+        ${assignmentTable["observationsColumn"]},
+        ${assignmentTable["fkClassIdColumn"]},
+        ${assignmentTable["fkDisciplineIdColumn"]}) values (2, 'Lista e Detalhes', '2020-06-20T23:59:59.999Z', 'uma observação muito muito muito muito muito muito muito grande', 2, 1);""",
+      """INSERT INTO ${assignmentTable["tableName"]} (
+        ${assignmentTable["idColumn"]},
+        ${assignmentTable["subjectColumn"]},
+        ${assignmentTable["endDateColumn"]},
+        ${assignmentTable["observationsColumn"]},
+        ${assignmentTable["fkClassIdColumn"]},
+        ${assignmentTable["fkDisciplineIdColumn"]}) values (3, 'Chamada e entrega de trabalhos da FIAP', '2020-07-11T23:59:59.999Z', 'Métodos de consulta assíncronos (mandatório)', 1, 1);""",
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {

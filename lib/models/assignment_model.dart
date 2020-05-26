@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:FiapEx/repository/db_connection.dart';
+
 class AssignmentModel {
     int id;
     String subject;
@@ -11,6 +13,13 @@ class AssignmentModel {
     String observations;
     int classId;
     int disciplineId;
+
+    final String idColumn = DbConnection.classTable["idColumn"];
+    final String subjectColumn = DbConnection.classTable["subjectColumn"];
+    final String endDateColumn = DbConnection.classTable["endDateColumn"];
+    final String observationsColumn = DbConnection.classTable["observationsColumn"];
+    final String classIdColumn = DbConnection.classTable["classIdColumn"];
+    final String disciplineIdColumn = DbConnection.classTable["disciplineIdColumn"];
 
     AssignmentModel({
         this.id,
