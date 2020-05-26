@@ -1,6 +1,5 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
-import 'package:FiapEx/components/snackbar_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
 import 'package:FiapEx/models/comment_model.dart';
 import 'package:FiapEx/models/delivery_model.dart';
@@ -131,7 +130,8 @@ class _AssignmentDeliveriesScreenState
             );
           } else {
             return Center(
-              child: Text("Algo deu errado... Não há integrantes cadastrados?!"),
+              child:
+                  Text("Algo deu errado... Não há integrantes cadastrados?!"),
             );
           }
         } else {
@@ -270,8 +270,7 @@ class _AssignmentDeliveriesScreenState
 
                   assignmentDeliveryRepository.update(delivery);
 
-                  SnackbarFiapEx(scaffoldKey: scaffoldKey)
-                      .show('Nota salva com sucesso!');
+                  showSnackBar('Nota salva com sucesso!');
 
                   if (this.mounted) {
                     setState(() {});
@@ -324,8 +323,7 @@ class _AssignmentDeliveriesScreenState
 
                   commentRepository.create(comment);
 
-                  SnackbarFiapEx(scaffoldKey: scaffoldKey)
-                      .show('Comentário publicado com sucesso!');
+                  showSnackBar('Comentário publicado com sucesso!');
 
                   if (this.mounted) {
                     setState(() {});
@@ -335,6 +333,16 @@ class _AssignmentDeliveriesScreenState
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  showSnackBar(String text) {
+    scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        content: Text(
+          text,
+        ),
       ),
     );
   }

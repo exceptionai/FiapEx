@@ -1,6 +1,5 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
-import 'package:FiapEx/components/snackbar_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
 import 'package:FiapEx/models/class_model.dart';
 import 'package:FiapEx/models/discipline_model.dart';
@@ -27,6 +26,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBarFiapEx(
         action: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -281,12 +281,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
 
                         assignmentRepository.update(assignment);
 
-                        SnackbarFiapEx(scaffoldKey: scaffoldKey)
-                            .show('Observações salvas com sucesso!');
-
-                        if (this.mounted) {
-                          setState(() {});
-                        }
+                        showSnackBar('Observações salvas com sucesso!');
                       }
                     },
                   ),
@@ -296,6 +291,16 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  showSnackBar(String text) {
+    scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        content: Text(
+          text,
+        ),
+      ),
     );
   }
 }
