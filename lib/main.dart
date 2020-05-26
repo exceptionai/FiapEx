@@ -1,3 +1,4 @@
+import 'package:FiapEx/screens/assignment_deliveries_screen.dart';
 import 'package:FiapEx/screens/assignment_screen.dart';
 import 'package:FiapEx/screens/login_screen.dart';
 import 'package:FiapEx/screens/row_call_history_screen.dart';
@@ -14,26 +15,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fiap Ex',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme:  TextTheme(
-          bodyText1: TextStyle(color: Colors.white),
-          subtitle1:  TextStyle(color: Colors.white,fontSize: 20),
-          subtitle2:  TextStyle(color: Colors.white,fontSize: 18),
-          headline1: TextStyle(color: Colors.white),
-          bodyText2: TextStyle(color: Colors.white,fontSize: 20),
-        ),
-        
-        primaryColor: const Color(0xffED145B),
-        accentColor: const Color(0xff151819),
-        fontFamily: 'GothamHTF',
-        hintColor: Colors.white,
-      
-      ),
       onGenerateRoute: (RouteSettings settings){
         switch (settings.name) {
           case '/assignment':
             return  MaterialPageRoute(
               builder: (_) => new AssignmentScreen(),
+              settings: settings,
+            );
+          
+          case '/assignment_deliveries':
+            return  MaterialPageRoute(
+              builder: (_) => new AssignmentDeliveriesScreen(assignment: settings.arguments),
               settings: settings,
             );
 
