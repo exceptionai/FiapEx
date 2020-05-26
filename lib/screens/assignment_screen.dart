@@ -205,7 +205,11 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
       future: assignmentRepository.getDeliveryAmount(assignmentId, type),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return getTextBasedOnType(type, snapshot.data);
+          if (snapshot.data != null) {
+            return getTextBasedOnType(type, snapshot.data);
+          } else {
+            return Center(child: Text("Um erro ocorreu na consulta."),);
+          }
         } else {
           return Center(
             child: CircularProgressIndicator(),

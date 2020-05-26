@@ -125,9 +125,15 @@ class _AssignmentDeliveriesScreenState
       future: assignmentDeliveryRepository.findStudentsByDeliveryId(deliveryId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Row(
-            children: <Widget>[studentsString(snapshot.data)],
-          );
+          if (snapshot.data.length > 0) {
+            return Row(
+              children: <Widget>[studentsString(snapshot.data)],
+            );
+          } else {
+            return Center(
+              child: Text("Algo deu errado... Não há integrantes cadastrados?!"),
+            );
+          }
         } else {
           return Center(
             child: CircularProgressIndicator(),
