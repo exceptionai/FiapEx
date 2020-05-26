@@ -18,6 +18,16 @@ class RowCallHistoryScreen extends StatelessWidget {
           },
         ),
       )),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).accentColor,
+        ),
+        onPressed: (){
+
+        },
+      ),
       drawer: DrawerFiapEx(
         route: '/',
       ),
@@ -28,6 +38,20 @@ class RowCallHistoryScreen extends StatelessWidget {
           child: ListView(
 
             children: <Widget>[
+
+              Container(
+                padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 17.0),
+                  child: Text(
+                    "HISTÓRICO DE CHAMADAS",
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+              ),
               RowCallHistoryTile(),
               RowCallHistoryTile(done: true),
               RowCallHistoryTile(done: true),

@@ -38,7 +38,6 @@ class RowCallScreen extends StatelessWidget {
                         "LISTA DE CHAMADA",
                         style: TextStyle(
                           fontSize: 30.0,
-                          fontFamily: 'GothamHTF',
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
@@ -55,9 +54,8 @@ class RowCallScreen extends StatelessWidget {
                         "3° ANO - 3SIT - 2020",
                         style: TextStyle(
                           fontSize: 17.0,
-                          fontFamily: 'GothamHTF',
                           fontWeight: FontWeight.bold,
-                          color: Color(0xffED145B),
+                          color: Theme.of(context).primaryColor
                         ),
                       ),
                     ),
@@ -73,7 +71,6 @@ class RowCallScreen extends StatelessWidget {
                         "DESENVOLVIMENTO CROSS PLATFORM",
                         style: TextStyle(
                           fontSize: 17.0,
-                          fontFamily: 'GothamHTF',
                           color: Colors.white,
                         ),
                       ),
