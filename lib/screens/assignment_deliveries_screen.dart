@@ -37,13 +37,13 @@ class _AssignmentDeliveriesScreenState
           action: Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
-          child: Image.asset('assets/images/pendenteicone.png', height: 26),
+          child: Icon(Icons.chevron_left,color: Theme.of(context).primaryColor,),
           onTap: () {
-            Navigator.of(context).pushReplacementNamed('/');
+            Navigator.of(context).pop();
           },
         ),
       )),
-      drawer: DrawerFiapEx(),
+      drawer: DrawerFiapEx(route: '/assignment',),
       body: Container(
         color: Theme.of(context).accentColor,
         child: Column(
@@ -192,11 +192,13 @@ class _AssignmentDeliveriesScreenState
     );
   }
 
-  Row deliveryDateRow(DeliveryModel delivery) {
-    return Row(
+  Wrap deliveryDateRow(DeliveryModel delivery) {
+    return Wrap(
       children: <Widget>[
-        Text(
-          "Entregue: " + formatter.format(delivery.deliveryDate),
+        Container(
+          child: Text(
+            "Entregue: " + formatter.format(delivery.deliveryDate),
+          ),
         ),
       ],
     );

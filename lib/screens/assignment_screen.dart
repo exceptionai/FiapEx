@@ -116,7 +116,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             size: 30.0,
           ),
           onTap: () async {
-            await Navigator.of(context).pushReplacementNamed(
+            await Navigator.of(context).pushNamed(
                 "/assignment_deliveries",
                 arguments: assignment);
             if (this.mounted) {
@@ -142,8 +142,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
     );
   }
 
-  Row disciplineRow(int disciplineId) {
-    return Row(
+  Wrap disciplineRow(int disciplineId) {
+    return Wrap(
       children: <Widget>[
         FutureBuilder<DisciplineModel>(
           future: disciplineRepository.getDiscipline(disciplineId),
@@ -192,8 +192,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
     );
   }
 
-  Row endDateRow(DateTime endDate) {
-    return Row(
+  Wrap endDateRow(DateTime endDate) {
+    return Wrap(
       children: <Widget>[
         Text("Data limite para a entrega: "),
         Text(DateFormat("dd-MM-yyyy").format(endDate)),

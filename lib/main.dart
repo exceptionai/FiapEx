@@ -14,6 +14,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fiap Ex',
+      theme: ThemeData(
+        textTheme:  TextTheme(
+          bodyText1: TextStyle(color: Colors.white),
+          bodyText2: TextStyle(color: Colors.white,fontSize: 20),
+        ),
+        
+        primaryColor: const Color(0xffED145B),
+        accentColor: const Color(0xff151819),
+        fontFamily: 'GothamHTF',
+        hintColor: Colors.white,
+      
+      ),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (RouteSettings settings){
         switch (settings.name) {
