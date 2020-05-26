@@ -1,5 +1,6 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/components/snackbar_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
 import 'package:FiapEx/models/class_model.dart';
 import 'package:FiapEx/models/discipline_model.dart';
@@ -21,9 +22,12 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   ClassRepository classRepository = ClassRepository();
   DisciplineRepository disciplineRepository = DisciplineRepository();
 
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBarFiapEx(
           action: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -128,6 +132,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         buildCardSubtitleData(assignment.id, "all"),
         buildCardSubtitleData(assignment.id, "nonRated"),
         buildCardSubtitleData(assignment.id, "rated"),
+        observationsForm(assignment),
       ],
     );
   }
@@ -229,5 +234,57 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           ],
         );
     }
+  }
+
+  Row observationsForm(AssignmentModel assignment) {
+    final GlobalKey<FormState> observationsFormKey = new GlobalKey<FormState>();
+
+    return Row(
+      children: <Widget>[
+        Form(
+          key: observationsFormKey,
+          child: Expanded(
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  initialValue: assignment.observations,
+                  maxLines: 5,
+                  decoration: new InputDecoration(
+                    icon: const Icon(Icons.text_fields),
+                    hintText: 'Digite suas observações...',
+                    labelText: 'Observações',
+                  ),
+                  validator: (value) {
+                    return null;
+                  },
+                  keyboardType: TextInputType.text,
+                  onSaved: (value) {
+                    assignment.observations = value;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: RaisedButton(
+                    child: Text("Salvar observações"),
+                    onPressed: () {
+                      if (observationsFormKey.currentState.validate()) {
+                        observationsFormKey.currentState.save();
+
+                        assignmentRepository.update(assignment);
+
+                        SnackbarFiapEx(scaffoldKey: scaffoldKey)
+                            .show('Observações salvas com sucesso!');
+
+                        setState(() {});
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
