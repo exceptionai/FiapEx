@@ -1,5 +1,6 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/components/snackbar_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
 import 'package:FiapEx/models/comment_model.dart';
 import 'package:FiapEx/models/delivery_model.dart';
@@ -238,7 +239,7 @@ class _AssignmentDeliveriesScreenState
 
                   assignmentRepository.update(widget.assignment);
 
-                  showSnackBar('Observações salvas com sucesso!');
+                  SnackbarFiapEx(scaffoldKey: scaffoldKey).show('Observações salvas com sucesso!');
 
                   setState(() {});
                 }
@@ -293,7 +294,7 @@ class _AssignmentDeliveriesScreenState
 
                   assignmentDeliveryRepository.update(delivery);
 
-                  showSnackBar('Nota salva com sucesso!');
+                  SnackbarFiapEx(scaffoldKey: scaffoldKey).show('Nota salva com sucesso!');
 
                   setState(() {});
                 }
@@ -344,7 +345,7 @@ class _AssignmentDeliveriesScreenState
 
                   commentRepository.create(comment);
 
-                  showSnackBar('Comentário publicado com sucesso!');
+                  SnackbarFiapEx(scaffoldKey: scaffoldKey).show('Comentário publicado com sucesso!');
 
                   setState(() {});
                 }
@@ -352,16 +353,6 @@ class _AssignmentDeliveriesScreenState
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  showSnackBar(String text) {
-    scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        content: Text(
-          text,
-        ),
       ),
     );
   }
