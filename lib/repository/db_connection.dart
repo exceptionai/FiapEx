@@ -71,6 +71,12 @@ class DbConnection {
     "fkAssignmentIdColumn" : "assignmentId"
   };
 
+  static final deliveryStudentTable = {
+    "tableName" : "deliveryStudent",
+    "fkDeliveryIdColumn" : "deliveryId",
+    "fkStudentRmColumn" : "studentRm"
+  };
+
   DbConnection();
   /*static final Repository _instance = Repository.internal();
 
@@ -149,6 +155,11 @@ class DbConnection {
         ${deliveryTable["gradeGivenDateColumn"]} TEXT,
         ${deliveryTable["fkAssignmentIdColumn"]} INTEGER,
         FOREIGN KEY (${deliveryTable["fkAssignmentIdColumn"]}) references ${assignmentTable["tableName"]} (${assignmentTable["idColumn"]}));""",
+      """CREATE TABLE ${deliveryStudentTable["tableName"]}(
+        ${deliveryStudentTable["fkDeliveryIdColumn"]} INTEGER,
+        ${deliveryStudentTable["fkStudentRmColumn"]} INTEGER,
+        FOREIGN KEY (${deliveryStudentTable["fkDeliveryIdColumn"]}) references ${deliveryTable["tableName"]} (${deliveryTable["idColumn"]}),
+        FOREIGN KEY (${deliveryStudentTable["fkStudentRmColumn"]}) references ${studentTable["tableName"]} (${studentTable["idColumn"]}));""",
     ];
 
     List<String> inserts = [
@@ -264,6 +275,30 @@ class DbConnection {
         ${deliveryTable["gradeColumn"]},
         ${deliveryTable["gradeGivenDateColumn"]},
         ${deliveryTable["fkAssignmentIdColumn"]}) values (6, '2020-05-29T20:19:59.999Z', 5, '2020-05-30T19:20:59.999Z', 3);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+        ${deliveryStudentTable["fkDeliveryIdColumn"]},
+        ${deliveryStudentTable["fkStudentRmColumn"]}) values (1, 1);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+        ${deliveryStudentTable["fkDeliveryIdColumn"]},
+        ${deliveryStudentTable["fkStudentRmColumn"]}) values (1, 3);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+        ${deliveryStudentTable["fkDeliveryIdColumn"]},
+        ${deliveryStudentTable["fkStudentRmColumn"]}) values (2, 5);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+      ${deliveryStudentTable["fkDeliveryIdColumn"]},
+      ${deliveryStudentTable["fkStudentRmColumn"]}) values (3, 2);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+        ${deliveryStudentTable["fkDeliveryIdColumn"]},
+        ${deliveryStudentTable["fkStudentRmColumn"]}) values (4, 4);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+        ${deliveryStudentTable["fkDeliveryIdColumn"]},
+        ${deliveryStudentTable["fkStudentRmColumn"]}) values (5, 1);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+        ${deliveryStudentTable["fkDeliveryIdColumn"]},
+        ${deliveryStudentTable["fkStudentRmColumn"]}) values (5, 5);""",
+      """INSERT INTO ${deliveryStudentTable["tableName"]} (
+        ${deliveryStudentTable["fkDeliveryIdColumn"]},
+        ${deliveryStudentTable["fkStudentRmColumn"]}) values (6, 3);""",
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {

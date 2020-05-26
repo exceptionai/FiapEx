@@ -4,6 +4,7 @@ import 'package:FiapEx/components/snackbar_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
 import 'package:FiapEx/models/comment_model.dart';
 import 'package:FiapEx/models/delivery_model.dart';
+import 'package:FiapEx/models/student.dart';
 import 'package:FiapEx/repository/assignment_delivery_repository.dart';
 import 'package:FiapEx/repository/comment_repository.dart';
 import 'package:flutter/material.dart';
@@ -189,11 +190,11 @@ class _AssignmentDeliveriesScreenState
   }
 
   Text studentsString(
-      List<DeliveryModel> students /*TODO: change to StudentModel*/) {
+      List<StudentModel> students /*TODO: change to StudentModel*/) {
     String studentsString = "";
 
     for (int i = 0; i < students.length; i++) {
-      studentsString += "Pedro"; /*TODO: change to students[i].name*/
+      studentsString += students[i].name; /*TODO: change to students[i].name*/
 
       if (i + 1 < students.length) {
         studentsString += ", ";
