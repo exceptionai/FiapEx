@@ -2,7 +2,10 @@
 import 'package:flutter/material.dart';
 
 class DrawerFiapEx extends StatelessWidget {
-  DrawerFiapEx();
+
+  final String route;
+
+  const DrawerFiapEx({this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +23,35 @@ class DrawerFiapEx extends StatelessWidget {
     return SafeArea(
       child: Stack(
         children: [
-          Positioned(
-            right: 15,
-            top: 30,
-            child: Icon(
-              Icons.exit_to_app,
-              size: 30,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
           ListView(
             padding: EdgeInsets.only(left: 16, right: 16, top: 30),
             children: <Widget>[
               Column(children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage: AssetImage('assets/images/profilepic.jpg'),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(left:20.0),
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundImage: AssetImage('assets/images/profilepic.jpg'),
+                    ),
+                  ),  
+                  Spacer(),
+                  InkWell(
+                    onTap: (){
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
+                    child: Icon(
+                          Icons.exit_to_app,
+                          size: 30,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                  ),
+                ],),
+
+                
                 SizedBox(
                   height: 10,
                 ),
@@ -59,14 +74,24 @@ class DrawerFiapEx extends StatelessWidget {
                 height: 30,
               ),
               InkWell(
-                              child: Text(
+                              child: Row(
+                                children: <Widget>[
+
+                    route == '/' ? 
+                    Icon(
+                      Icons.arrow_right,
+                      color: Theme.of(context).primaryColor,
+                    ) : Padding(padding: EdgeInsets.only(left:25),),
+                                  Text(
                   'LISTAS DE CHAMADA',
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 18.0,
                       fontFamily: 'GothamHTF',
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
+                      color: _routeColor('/',context)),
                 ),
+                                ],
+                              ),
                 onTap: (){
                   Navigator.of(context).pushReplacementNamed('/');
                 },
@@ -85,13 +110,26 @@ class DrawerFiapEx extends StatelessWidget {
                 height: 30,
               ),
               InkWell(
-                child: Text(
-                  'ENTREGAS DE TRABALHO',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontFamily: 'GothamHTF',
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
+                child: Row(
+                  children: <Widget>[
+                    route == '/assignment' ? 
+                    Icon(
+                      Icons.arrow_right,
+                      color: Theme.of(context).primaryColor,
+                    ) : Padding(padding: EdgeInsets.only(left:25),),
+                    
+                    Container(
+                      
+                      child: Text(
+                        'ENTREGAS DE TRABALHO',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontFamily: 'GothamHTF',
+                            fontWeight: FontWeight.bold,
+                            color: _routeColor('/assignment',context)),
+                      ),
+                    ),
+                  ],
                 ),
                 onTap: (){
                   Navigator.of(context).pushReplacementNamed('/assignment');
@@ -118,18 +156,10 @@ class DrawerFiapEx extends StatelessWidget {
     );
   }
 
-  Widget _headerTitle(String title) {
-    return Positioned(
-      top: 8.0,
-      left: 0.0,
-      child: Text(
-        title,
-        style: TextStyle(
-            fontSize: 34.0,
-            fontFamily: 'GothamHTF',
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
-      ),
-    );
+  Color _routeColor(String route, BuildContext context){
+    if(this.route == route){
+      return Theme.of(context).primaryColor;
+    }
+    return Colors.white;
   }
 }

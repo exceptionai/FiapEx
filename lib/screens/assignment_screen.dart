@@ -27,18 +27,19 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBarFiapEx(
-          action: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          child: Image.asset('assets/images/pendenteicone.png', height: 26),
-          onTap: () {
-            Navigator.of(context).pushReplacementNamed('/');
-          },
-        ),
-      )),
-      drawer: DrawerFiapEx(),
+        action: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Image.asset('assets/images/pendenteicone.png',
+                      height: 26),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
+        )
+      ),
+      drawer: DrawerFiapEx(route: '/assignment'),
       body: Container(
         color: Theme.of(context).accentColor,
         child: FutureBuilder<List>(
