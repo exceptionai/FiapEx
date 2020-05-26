@@ -100,21 +100,7 @@ class _AssignmentDeliveriesScreenState
               child: Column(
                 children: <Widget>[
                   Text("Integrantes: "),
-                  FutureBuilder<List>(
-                    future: assignmentDeliveryRepository
-                        .findStudentsByDeliveryId(delivery.id),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return Row(
-                          children: <Widget>[studentsString(snapshot.data)],
-                        );
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    },
-                  ),
+                  students(delivery.id),
                 ],
               ),
             ),
@@ -131,6 +117,23 @@ class _AssignmentDeliveriesScreenState
           ),
         ),
       ),
+    );
+  }
+
+  FutureBuilder<List<StudentModel>> students(int deliveryId) {
+    return FutureBuilder<List<StudentModel>>(
+      future: assignmentDeliveryRepository.findStudentsByDeliveryId(deliveryId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Row(
+            children: <Widget>[studentsString(snapshot.data)],
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 
