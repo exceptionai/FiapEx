@@ -1,31 +1,25 @@
 import 'package:FiapEx/models/comment_model.dart';
+import 'package:sqflite/sqflite.dart';
+
+import 'db_connection.dart';
 
 class CommentRepository {
+  
+  final DbConnection dbConnection = DbConnection();
+  final String table = DbConnection.commentTable["tableName"];
+  final String idColumn = DbConnection.commentTable["idColumn"];
+  final String messageColumn = DbConnection.commentTable["messageColumn"];
+  final String dateColumn = DbConnection.commentTable["dateColumn"];
+  final String deliveryIdColumn = DbConnection.commentTable["deliveryIdColumn"];
 
   Future<List<CommentModel>> findCommentsByDeliveryId(int deliveryId) async {
-    /*TODO: change to db query*/
-
-    List<CommentModel> comments = List<CommentModel>();
-
-    if (deliveryId == 1) {
-      comments.add(
-        CommentModel(
-            id: 1,
-            message: "VOCÊ TEM TODA RAZÃO",
-            date: DateTime.now(),
-            deliveryId: 1),
-      );
-
-      comments.add(
-        CommentModel(
-            id: 2,
-            message: "BACANA DEMAIS CARA",
-            date: DateTime.now(),
-            deliveryId: 1),
-      );
+    Database db = await dbConnection.db;
+    List listMap = await db.rawQuery("SELECT * FROM $table WHERE deliveryId = $deliveryId;");
+    List<CommentModel> listModel = List();
+    for (Map m in listMap) {
+      listModel.add(CommentModel.fromMap(m));
     }
-
-    return comments;
+    return listModel;
   }
 
   Future<int> create(CommentModel comment) async {

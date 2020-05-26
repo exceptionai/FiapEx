@@ -14,12 +14,12 @@ class AssignmentModel {
     int classId;
     int disciplineId;
 
-    final String idColumn = DbConnection.classTable["idColumn"];
-    final String subjectColumn = DbConnection.classTable["subjectColumn"];
-    final String endDateColumn = DbConnection.classTable["endDateColumn"];
-    final String observationsColumn = DbConnection.classTable["observationsColumn"];
-    final String classIdColumn = DbConnection.classTable["classIdColumn"];
-    final String disciplineIdColumn = DbConnection.classTable["disciplineIdColumn"];
+    final String idColumn = DbConnection.assignmentTable["idColumn"];
+    final String subjectColumn = DbConnection.assignmentTable["subjectColumn"];
+    final String endDateColumn = DbConnection.assignmentTable["endDateColumn"];
+    final String observationsColumn = DbConnection.assignmentTable["observationsColumn"];
+    final String classIdColumn = DbConnection.assignmentTable["fkClassIdColumn"];
+    final String disciplineIdColumn = DbConnection.assignmentTable["fkDisciplineIdColumn"];
 
     AssignmentModel({
         this.id,

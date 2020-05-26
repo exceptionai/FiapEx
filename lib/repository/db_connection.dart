@@ -77,6 +77,14 @@ class DbConnection {
     "fkStudentRmColumn" : "studentRm"
   };
 
+  static final commentTable = {
+    "tableName" : "comments",
+    "idColumn" : "id",
+    "messageColumn" : "message",
+    "dateColumn" : "date",
+    "fkDeliveryIdColumn" : "deliveryId"
+  };
+
   DbConnection();
   /*static final Repository _instance = Repository.internal();
 
@@ -160,6 +168,12 @@ class DbConnection {
         ${deliveryStudentTable["fkStudentRmColumn"]} INTEGER,
         FOREIGN KEY (${deliveryStudentTable["fkDeliveryIdColumn"]}) references ${deliveryTable["tableName"]} (${deliveryTable["idColumn"]}),
         FOREIGN KEY (${deliveryStudentTable["fkStudentRmColumn"]}) references ${studentTable["tableName"]} (${studentTable["idColumn"]}));""",
+      """CREATE TABLE ${commentTable["tableName"]}(
+        ${commentTable["idColumn"]} INTEGER PRIMARY KEY,
+        ${commentTable["messageColumn"]} TEXT,
+        ${commentTable["dateColumn"]} TEXT,
+        ${commentTable["fkDeliveryIdColumn"]} INTEGER,
+        FOREIGN KEY (${commentTable["fkDeliveryIdColumn"]}) references ${deliveryTable["tableName"]} (${deliveryTable["idColumn"]}));""",
     ];
 
     List<String> inserts = [
@@ -299,6 +313,16 @@ class DbConnection {
       """INSERT INTO ${deliveryStudentTable["tableName"]} (
         ${deliveryStudentTable["fkDeliveryIdColumn"]},
         ${deliveryStudentTable["fkStudentRmColumn"]}) values (6, 3);""",
+      """INSERT INTO ${commentTable["tableName"]} (
+        ${commentTable["idColumn"]},
+        ${commentTable["messageColumn"]},
+        ${commentTable["dateColumn"]},
+        ${commentTable["fkDeliveryIdColumn"]}) values (1, 'VOCÊ TEM TODA RAZÃO', '2020-05-30T11:29:59.999Z', 1);""",
+      """INSERT INTO ${commentTable["tableName"]} (
+        ${commentTable["idColumn"]},
+        ${commentTable["messageColumn"]},
+        ${commentTable["dateColumn"]},
+        ${commentTable["fkDeliveryIdColumn"]}) values (2, 'BACANA DEMAIS CARA', '2020-05-30T11:30:59.999Z', 1);""",
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {

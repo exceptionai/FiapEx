@@ -27,7 +27,7 @@ class _AssignmentDeliveriesScreenState
   CommentRepository commentRepository = CommentRepository();
 
   DateFormat formatter = DateFormat("dd/MM/yyyy 'às' hh:mm:ss");
-  
+
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -182,9 +182,13 @@ class _AssignmentDeliveriesScreenState
   }
 
   Row deliveryDateRow(DeliveryModel delivery) {
-    return Row(children: <Widget>[
-      Text("Entregue: " + formatter.format(delivery.deliveryDate))
-    ],);
+    return Row(
+      children: <Widget>[
+        Text(
+          "Entregue: " + formatter.format(delivery.deliveryDate),
+        ),
+      ],
+    );
   }
 
   Text gradeGivenDateText(DeliveryModel delivery) {
@@ -197,11 +201,11 @@ class _AssignmentDeliveriesScreenState
   }
 
   Text studentsString(
-      List<StudentModel> students /*TODO: change to StudentModel*/) {
+      List<StudentModel> students) {
     String studentsString = "";
 
     for (int i = 0; i < students.length; i++) {
-      studentsString += students[i].name; /*TODO: change to students[i].name*/
+      studentsString += students[i].name;
 
       if (i + 1 < students.length) {
         studentsString += ", ";
@@ -256,7 +260,8 @@ class _AssignmentDeliveriesScreenState
 
                   assignmentDeliveryRepository.update(delivery);
 
-                  SnackbarFiapEx(scaffoldKey: scaffoldKey).show('Nota salva com sucesso!');
+                  SnackbarFiapEx(scaffoldKey: scaffoldKey)
+                      .show('Nota salva com sucesso!');
 
                   setState(() {});
                 }
@@ -307,7 +312,8 @@ class _AssignmentDeliveriesScreenState
 
                   commentRepository.create(comment);
 
-                  SnackbarFiapEx(scaffoldKey: scaffoldKey).show('Comentário publicado com sucesso!');
+                  SnackbarFiapEx(scaffoldKey: scaffoldKey)
+                      .show('Comentário publicado com sucesso!');
 
                   setState(() {});
                 }

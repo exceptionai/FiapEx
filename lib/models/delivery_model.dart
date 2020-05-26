@@ -13,11 +13,11 @@ class DeliveryModel {
     DateTime gradeGivenDate;
     int assignmentId;
 
-    final String idColumn = DbConnection.classTable["idColumn"];
-    final String deliveryDateColumn = DbConnection.classTable["deliveryDateColumn"];
-    final String gradeColumn = DbConnection.classTable["gradeColumn"];
-    final String gradeGivenDateColumn = DbConnection.classTable["gradeGivenDateColumn"];
-    final String assignmentIdColumn = DbConnection.classTable["assignmentIdColumn"];
+    final String idColumn = DbConnection.deliveryTable["idColumn"];
+    final String deliveryDateColumn = DbConnection.deliveryTable["deliveryDateColumn"];
+    final String gradeColumn = DbConnection.deliveryTable["gradeColumn"];
+    final String gradeGivenDateColumn = DbConnection.deliveryTable["gradeGivenDateColumn"];
+    final String assignmentIdColumn = DbConnection.deliveryTable["fkAssignmentIdColumn"];
 
     DeliveryModel({
         this.id,
