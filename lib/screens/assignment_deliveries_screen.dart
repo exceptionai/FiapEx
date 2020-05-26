@@ -276,7 +276,7 @@ class _AssignmentDeliveriesScreenState
   Form commentForm(int deliveryId) {
     final GlobalKey<FormState> commentFormKey = new GlobalKey<FormState>();
 
-    CommentModel comment = CommentModel();
+    CommentModel comment = CommentModel(deliveryId: deliveryId);
 
     return Form(
       key: commentFormKey,

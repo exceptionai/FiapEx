@@ -22,8 +22,9 @@ class CommentRepository {
     return listModel;
   }
 
-  Future<int> create(CommentModel comment) async {
-    /*TODO: change to db query*/
-    return 1;
+  Future<int> create(CommentModel model) async {
+    Database db = await dbConnection.db;
+    model.id = await db.insert(table, model.toMap());
+    return model.id;
   }
 }
