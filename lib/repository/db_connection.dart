@@ -47,10 +47,11 @@ class DbConnection {
 
   static final rollRegisterTable = {
     "tableName" : "rollRegisters",
-    "idColumn" : "idrollRegister",
+    "idColumn" : "idRollRegister",
     "fkStudentColumn" : "rm",
     "fkRollColumn" : "idRoll",
-    "presenceColumn" : "presence"
+    "presenceColumn" : "presence",
+    "registerDateColumn" :"registerDate"
   };
 
   DbConnection();
@@ -113,6 +114,7 @@ class DbConnection {
          ${rollRegisterTable["fkStudentColumn"]} INTEGER,
          ${rollRegisterTable["fkRollColumn"]} INTEGER,
          ${rollRegisterTable["presenceColumn"]} TEXT,
+         ${rollRegisterTable["registerDateColumn"]} TEXT,
          FOREIGN KEY (${rollRegisterTable["fkStudentColumn"]}) references ${studentTable["tableName"]} (${studentTable["idColumn"]}),
          FOREIGN KEY (${rollRegisterTable["fkRollColumn"]}) references ${rollTable["tableName"]} (${rollTable["idColumn"]}));""",
     ];
@@ -172,7 +174,67 @@ class DbConnection {
          ${studentTable["idColumn"]},
          ${studentTable["nameColumn"]},
          ${studentTable["classFkColumn"]},
-         ${studentTable["imgUrlColumn"]}) VALUES (5,'Celso Portiolli',1,'celso-portiolli.jpg');""", 
+         ${studentTable["imgUrlColumn"]}) VALUES (5,'Celso Portiolli',1,'celso-portiolli.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (6,'Doutor Manhatam',2,'doutor-manhatam.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (7,'Faustinho Silva',1,'faustinho-silva.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (8,'Hello Kitty',2,'hello-kit.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (9,'Homem Aranha',1,'homem-aranha.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (10,'Hulk',2,'hulk.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (11,'Piano Cat',1,'piano-cat.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (12,'Robert Pattinson',2,'robert-pattinson.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (13,'Sherek',1,'sherek.png');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (14,'Steve Jobs',2,'steve-jobs.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (15,'Susana Vieira',1,'susana-vieira.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (16,'Tony Ramos',2,'tony-ramos.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (17,'Toninho Estrela',1,'tony-stark.jpg');""",
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {
