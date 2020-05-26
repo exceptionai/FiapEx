@@ -200,8 +200,7 @@ class _AssignmentDeliveriesScreenState
     }
   }
 
-  Text studentsString(
-      List<StudentModel> students) {
+  Text studentsString(List<StudentModel> students) {
     String studentsString = "";
 
     for (int i = 0; i < students.length; i++) {
@@ -263,7 +262,9 @@ class _AssignmentDeliveriesScreenState
                   SnackbarFiapEx(scaffoldKey: scaffoldKey)
                       .show('Nota salva com sucesso!');
 
-                  setState(() {});
+                  if (this.mounted) {
+                    setState(() {});
+                  }
                 }
               },
             ),
@@ -315,7 +316,9 @@ class _AssignmentDeliveriesScreenState
                   SnackbarFiapEx(scaffoldKey: scaffoldKey)
                       .show('Comentário publicado com sucesso!');
 
-                  setState(() {});
+                  if (this.mounted) {
+                    setState(() {});
+                  }
                 }
               },
             ),

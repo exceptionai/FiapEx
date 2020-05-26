@@ -118,7 +118,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             await Navigator.of(context).pushReplacementNamed(
                 "/assignment_deliveries",
                 arguments: assignment);
-            setState(() {});
+            if (this.mounted) {
+              setState(() {});
+            }
           },
         ),
       ),
@@ -277,7 +279,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                         SnackbarFiapEx(scaffoldKey: scaffoldKey)
                             .show('Observações salvas com sucesso!');
 
-                        setState(() {});
+                        if (this.mounted) {
+                          setState(() {});
+                        }
                       }
                     },
                   ),
