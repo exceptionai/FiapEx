@@ -2,6 +2,7 @@ import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
 import 'package:FiapEx/tiles/student_row_call_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RowCallScreen extends StatelessWidget {
   const RowCallScreen({Key key}) : super(key: key);
@@ -51,7 +52,7 @@ class RowCallScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(17.0, 0, 0, 0),
                       child: Text(
-                        "3° ANO - 3SIT - 2020",
+                        "3° ANO - 3SIT - 25/05/2020",
                         style: TextStyle(
                           fontSize: 17.0,
                           fontWeight: FontWeight.bold,
@@ -92,9 +93,10 @@ class RowCallScreen extends StatelessWidget {
                             "Finalizar Chamada",
                             style: TextStyle(
                               fontSize: 17.0,
+                              fontWeight: FontWeight.bold
                             ),
                           ),
-                          onPressed: () {}),
+                          onPressed: () => showConfirmDialog(context)),
                     ),
                   ],
                 ),
@@ -102,6 +104,67 @@ class RowCallScreen extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  showConfirmDialog(BuildContext context){
+    showDialog(
+      context: context, 
+      builder: (_) => AlertDialog(
+        backgroundColor: Theme.of(context).accentColor,
+        title: Text('Finalizar Chamada',style: TextStyle(color: Theme.of(context).primaryColor),),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topLeft: Radius.circular(15))),
+        content: 
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Deseja realmente finalizar a chamada?', style: TextStyle(color: Colors.white),),
+              SizedBox(height: 30,),
+              Row(
+                children: <Widget>[
+                  Text('Alunos: ', style: TextStyle(color: Colors.white),),
+                  Icon(Icons.person_outline,color: Colors.lightBlueAccent,),
+                  Text('40 ', style: TextStyle(color: Colors.lightBlueAccent),),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text('Presentes: ', style: TextStyle(color: Colors.white),),
+                  Image.asset(
+                    'assets/images/presenteicone.png',
+                    height: 15, 
+                  ),
+                  Text(' 30 ', style: TextStyle(color: Colors.greenAccent),),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text('Ausentes: ', style: TextStyle(color: Colors.white),),
+                  Image.asset(
+                    'assets/images/ausenteicone.png',
+                    height: 15, 
+                  ),
+                  Text(' 10 ', style: TextStyle(color: Colors.redAccent),),
+                ],
+              ),
+              SizedBox(height: 15,),
+              Text('Data: ${DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now())} ', style: TextStyle(color: Colors.white),),
+              
+              SizedBox(height: 15,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  FlatButton(child: Text('Sim', style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).primaryColor,fontSize: 18)),onPressed: (){Navigator.of(context).pop();},),
+                  FlatButton(child: Text('Não', style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).primaryColor,fontSize: 18)),onPressed: (){Navigator.of(context).pop();},),
+                ],
+              ),
+              
+            ],
+          ),
+        elevation: 24,
+        
+      ),
+      barrierDismissible: true);
   }
 
   

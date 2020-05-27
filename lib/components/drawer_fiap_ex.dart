@@ -1,11 +1,21 @@
 //Flutter
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class DrawerFiapEx extends StatelessWidget {
+class DrawerFiapEx extends StatefulWidget {
 
   final String route;
 
   const DrawerFiapEx({this.route});
+
+  @override
+  _DrawerFiapExState createState() => _DrawerFiapExState();
+}
+
+class _DrawerFiapExState extends State<DrawerFiapEx> {
+
+  //TODO: buscar no repository a imagem
+  String imagePath = 'assets/images/profilepic.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +43,21 @@ class DrawerFiapEx extends StatelessWidget {
                   Spacer(),
                   Padding(
                     padding: const EdgeInsets.only(left:20.0),
-                    child: CircleAvatar(
-                      radius: 35,
-                      backgroundImage: AssetImage('assets/images/profilepic.jpg'),
+                    child: InkWell(
+                      child: CircleAvatar(
+                        radius: 35,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        backgroundImage: AssetImage(imagePath),
+                      ),
+                      onTap: (){
+                        ImagePicker.pickImage(source: ImageSource.gallery).then((file){
+                          if(file == null) return;
+                          setState(() {
+                            //TODO: salvar no repository a imagem
+                            imagePath = file.path;
+                          });
+                        });
+                      },
                     ),
                   ),  
                   Spacer(),
@@ -77,7 +99,7 @@ class DrawerFiapEx extends StatelessWidget {
                               child: Row(
                                 children: <Widget>[
 
-                    route == '/' ? 
+                    widget.route == '/' ? 
                     Icon(
                       Icons.arrow_right,
                       color: Theme.of(context).primaryColor,
@@ -112,7 +134,7 @@ class DrawerFiapEx extends StatelessWidget {
               InkWell(
                 child: Row(
                   children: <Widget>[
-                    route == '/assignment' ? 
+                    widget.route == '/assignment' ? 
                     Icon(
                       Icons.arrow_right,
                       color: Theme.of(context).primaryColor,
@@ -157,7 +179,7 @@ class DrawerFiapEx extends StatelessWidget {
   }
 
   Color _routeColor(String route, BuildContext context){
-    if(this.route == route){
+    if(widget.route == route){
       return Theme.of(context).primaryColor;
     }
     return Colors.white;
