@@ -20,15 +20,13 @@ class RowCallHistoryScreen extends StatelessWidget {
         ),
       )),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).accentColor,
-        ),
-        onPressed: (){
-
-        },
-      ),
+                heroTag: "button",
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/new');
+                },
+                child: Icon(Icons.exposure_plus_1),
+                backgroundColor: Color.fromRGBO(237, 20, 91, .9),
+              ),
       drawer: DrawerFiapEx(
         route: '/',
       ),
@@ -36,8 +34,7 @@ class RowCallHistoryScreen extends StatelessWidget {
           padding: EdgeInsets.all(8.0),
           color: Theme.of(context).accentColor,
           width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
+          child: 
               ListView(
               children: <Widget>[
                 Container(
@@ -63,21 +60,6 @@ class RowCallHistoryScreen extends StatelessWidget {
                 RowCallHistoryTile(done: true),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: 
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => NewRollCallScreen())
-                  );
-                },
-                child: Icon(Icons.exposure_plus_1),
-                backgroundColor: Color.fromRGBO(237, 20, 91, .9),
-              ),
-            ),
-          ],
-        )
       ),
     );
   }

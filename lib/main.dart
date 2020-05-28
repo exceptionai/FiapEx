@@ -1,6 +1,7 @@
 import 'package:FiapEx/screens/assignment_deliveries_screen.dart';
 import 'package:FiapEx/screens/assignment_screen.dart';
 import 'package:FiapEx/screens/login_screen.dart';
+import 'package:FiapEx/screens/new_roll_call_screen.dart';
 import 'package:FiapEx/screens/row_call_history_screen.dart';
 import 'package:FiapEx/screens/row_call_screen.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,11 @@ class MyApp extends StatelessWidget {
           case '/login':
             return MyCustomRoute(
               builder: (_) => LoginScreen(),
+              settings: settings
+            );
+          case '/new':
+            return MyCustomRoute(
+              builder: (_) => NewRowCallScreen(),
               settings: settings
             );
           default: 
