@@ -1,10 +1,15 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/models/roll_model.dart';
+import 'package:FiapEx/repository/roll_repository.dart';
 import 'package:FiapEx/tiles/row_call_history_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class RowCallHistoryScreen extends StatelessWidget {
+
+  RollRepository repository = new RollRepository();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,14 +57,24 @@ class RowCallHistoryScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              RowCallHistoryTile(),
-              RowCallHistoryTile(done: true),
-              RowCallHistoryTile(done: true),
-              RowCallHistoryTile(done: true),
-              RowCallHistoryTile(done: true),
-              RowCallHistoryTile(done: true),
-              RowCallHistoryTile(done: true),
-              RowCallHistoryTile(done: true),
+              FutureBuilder<List<RollModel>>(
+                future: repository.getAllRolles(),
+                builder: (context, snapshot){
+                  if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                    if(snapshot.data.length > 0){
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index){
+                          return RowCallHistoryTile(snapshot.data[index]);
+                        }
+                      );
+                    }
+                    return Center(child: Icon(Icons.sentiment_dissatisfied,color: Theme.of(context).primaryColor,size: 90,));
+                  }
+                  return Center(child:CircularProgressIndicator());
+                },
+              )
             ],
           )),
     );

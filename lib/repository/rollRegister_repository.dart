@@ -1,3 +1,4 @@
+import 'package:FiapEx/models/student.dart';
 import 'package:FiapEx/repository/db_connection.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -59,6 +60,14 @@ class RollRegisterRepository{
     }else{
       return false;
     }
+  }
+
+  Future<int> presentStudentsCount(rowCallId) async{
+
+    Database db = await dbConnection.db;
+    int quantidade = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM $rollRegisterTable WHERE $idRollColumn = $rowCallId"));
+    return quantidade;
+
   }
 
    /*Future<int> changePresence(String presence) async {

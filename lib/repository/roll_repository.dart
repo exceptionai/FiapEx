@@ -10,7 +10,7 @@ class RollRepository{
   final String idColumn = DbConnection.rollTable["idColumn"];
   final String nameColumn = DbConnection.rollTable["nameColumn"];
  
-  Future<List> getAllRolles() async {
+  Future<List<RollModel>> getAllRolles() async {
     Database db = await dbConnection.db;
     List listMap = await db.rawQuery("SELECT * FROM $table;");
     List<RollModel> listModel = List();

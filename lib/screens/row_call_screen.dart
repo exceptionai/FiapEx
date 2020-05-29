@@ -1,11 +1,27 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/models/student.dart';
+import 'package:FiapEx/repository/student_repository.dart';
 import 'package:FiapEx/tiles/student_row_call_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class RowCallScreen extends StatelessWidget {
-  const RowCallScreen({Key key}) : super(key: key);
+class RowCallScreen extends StatefulWidget {
+
+  RowCallScreen({Key key}) : super(key: key);
+
+  @override
+  _RowCallScreenState createState() => _RowCallScreenState();
+}
+
+class _RowCallScreenState extends State<RowCallScreen> {
+  StudentRepository studentRepository = new StudentRepository(); 
+
+  @override
+  void initState() { 
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +95,19 @@ class RowCallScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              StudentRowCallTile(),
+              FutureBuilder<List<StudentModel>>(
+                future: studentRepository.getAllStudents(),
+                builder: (context,snapshot){
+                  if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics() ,
+                      children: snapshot.data.map((student)=> StudentRowCallTile(student)).toList(),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
               Padding(
                 padding: EdgeInsets.only(top: 30, bottom: 20),
                 child: Row(
@@ -166,6 +194,4 @@ class RowCallScreen extends StatelessWidget {
       ),
       barrierDismissible: true);
   }
-
-  
 }

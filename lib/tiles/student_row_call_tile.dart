@@ -1,9 +1,9 @@
+import 'package:FiapEx/models/student.dart';
 import 'package:flutter/material.dart';
 
 class StudentRowCallTile extends StatelessWidget {
-  const StudentRowCallTile({
-    Key key,
-  }) : super(key: key);
+  final StudentModel student;
+  const StudentRowCallTile(this.student);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class StudentRowCallTile extends StatelessWidget {
                   _showModalStudent(context);
                 },
                               child: Text(
-                  "Gabriel Lopes Pontes",
+                  "${student.name}",
                   style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.white,
@@ -83,14 +83,14 @@ class StudentRowCallTile extends StatelessWidget {
 
               borderRadius: BorderRadius.all(Radius.circular(8)),
                 image: DecorationImage(
-                  image: AssetImage('assets/images/students/lopes.jpeg'),
+                  image: AssetImage('assets/images/${student.imgUrl}'),
                   fit: BoxFit.cover
 
                 )
               ),
             ),
             SizedBox(height: 20,),
-            Text('GABRIEL LOPES PONTES'),
+            Text('${student.name.toUpperCase()}'),
             SizedBox(height: 25,),
             Row(
               children: <Widget>[

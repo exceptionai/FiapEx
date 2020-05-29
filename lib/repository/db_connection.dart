@@ -136,7 +136,7 @@ class DbConnection {
       """CREATE TABLE ${rollTable["tableName"]}(
          ${rollTable["idColumn"]} INTEGER PRIMARY KEY,
          ${rollTable["dateColumn"]} TEXT,
-         ${rollTable["doneColumn"]} TEXT,
+         ${rollTable["doneColumn"]} INTEGER,
          ${rollTable["fkClassColumn"]} INTEGER,
          ${rollTable["fkDisciplineColumn"]} INTEGER,
          FOREIGN KEY (${rollTable["fkClassColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}),
@@ -179,6 +179,7 @@ class DbConnection {
     ];
 
     List<String> inserts = [
+
       """INSERT INTO ${classTable["tableName"]} (${classTable["idColumn"]},
         ${classTable["nameColumn"]}) VALUES (1,'3SIT');""",
       """INSERT INTO ${classTable["tableName"]} (${classTable["idColumn"]},
@@ -294,6 +295,18 @@ class DbConnection {
          ${studentTable["nameColumn"]},
          ${studentTable["classFkColumn"]},
          ${studentTable["imgUrlColumn"]}) VALUES (17,'Toninho Estrela',1,'tony-stark.jpg');""",
+
+      """INSERT INTO ${rollTable["tableName"]} (
+        ${rollTable["dateColumn"]},
+        ${rollTable["doneColumn"]},
+        ${rollTable["fkClassColumn"]},
+        ${rollTable["fkDisciplineColumn"]}) VALUES ('2020-05-28T01:45:29.185Z',0,1,1);""",
+
+      """INSERT INTO ${rollTable["tableName"]} (
+        ${rollTable["dateColumn"]},
+        ${rollTable["doneColumn"]},
+        ${rollTable["fkClassColumn"]},
+        ${rollTable["fkDisciplineColumn"]}) VALUES ('2020-05-27T01:45:29.185Z',1,1,1);""",
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {

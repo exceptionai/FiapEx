@@ -9,7 +9,7 @@ class StudentRepository{
   final String idColumn = DbConnection.studentTable["idColumn"];
   final String nameColumn = DbConnection.studentTable["nameColumn"];
 
-  Future<List> getAllStudents() async {
+  Future<List<StudentModel>> getAllStudents() async {
     Database db = await dbConnection.db;
     List listMap = await db.rawQuery("SELECT * FROM $table;");
     List<StudentModel> listModel = List();
