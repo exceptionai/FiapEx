@@ -55,7 +55,7 @@ class RowCallScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(17.0, 0, 0, 0),
                       child: Text(
-                        "3° ANO - 3SIT - ${DateFormat('dd/MM/yyyy').format(rollModel.date)}",
+                        "3° ANO - 3SIT • 2020",
                         style: TextStyle(
                           fontSize: 17.0,
                           fontWeight: FontWeight.bold,

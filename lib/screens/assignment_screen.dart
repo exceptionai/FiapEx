@@ -28,17 +28,15 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBarFiapEx(
-        action: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              child: Image.asset('assets/images/pendenteicone.png',
-                      height: 26),
-            onTap: (){
-              Navigator.of(context).pushReplacementNamed('/');
-            },
-          ),
-        )
-      ),
+          action: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          child: Image.asset('assets/images/pendenteicone.png', height: 26),
+          onTap: () {
+            Navigator.of(context).pushReplacementNamed('/');
+          },
+        ),
+      )),
       drawer: DrawerFiapEx(route: '/assignment'),
       body: Container(
         color: Theme.of(context).accentColor,
@@ -50,7 +48,13 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                 return buildListView(snapshot.data);
               } else {
                 return Center(
-                  child: Text("Nenhum trabalho cadastrado!"),
+                  child: Text(
+                    "Nenhum trabalho cadastrado!",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20.0,
+                    ),
+                  ),
                 );
               }
             } else {
@@ -76,17 +80,19 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   Card assignmentCard(AssignmentModel assignment) {
     return Card(
       elevation: 12.0,
+      color: Color(0xff151819),
       margin: new EdgeInsets.symmetric(
         horizontal: 12.0,
         vertical: 6.0,
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(64, 75, 96, .9),
+          color: Theme.of(context).accentColor,
+          border: Border.all(color: Theme.of(context).primaryColor),
+          borderRadius: BorderRadius.circular(15.0),
         ),
         child: ListTile(
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           leading: Container(
             padding: EdgeInsets.only(right: 12.0),
             decoration: new BoxDecoration(
@@ -99,14 +105,18 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             ),
             child: Icon(
               Icons.assignment,
-              color: Colors.white,
+              color: Color(0xffED145B),
             ),
           ),
-          title: Text(
-            assignment.subject,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          title: Container(
+            padding: EdgeInsets.only(top: 15.0),
+            child: Text(
+              assignment.subject,
+              style: TextStyle(
+                color: Color(0xffED145B),
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           subtitle: assignmentCardSubtitle(assignment),
@@ -116,9 +126,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             size: 30.0,
           ),
           onTap: () async {
-            await Navigator.of(context).pushNamed(
-                "/assignment_deliveries",
-                arguments: assignment);
+            await Navigator.of(context)
+                .pushNamed("/assignment_deliveries", arguments: assignment);
             if (this.mounted) {
               setState(() {});
             }
@@ -150,10 +159,25 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.data != null) {
-                return Text(snapshot.data.name);
+                return Container(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: Text(
+                    snapshot.data.name,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
               } else {
                 return Center(
-                  child: Text("Sem disciplina"),
+                  child: Text(
+                    "Sem disciplina",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
                 );
               }
             } else {
@@ -170,23 +194,39 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   Row classRow(int classId) {
     return Row(
       children: <Widget>[
-        FutureBuilder<ClassModel>(
-          future: classRepository.getClass(classId),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.data != null) {
-                return Text(snapshot.data.name);
+        Container(
+          padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
+          child: FutureBuilder<ClassModel>(
+            future: classRepository.getClass(classId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data != null) {
+                  return Text(
+                    snapshot.data.name,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: Text(
+                      "Sem turma",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                }
               } else {
                 return Center(
-                  child: Text("Sem turma"),
+                  child: CircularProgressIndicator(),
                 );
               }
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
+            },
+          ),
         ),
       ],
     );
@@ -195,8 +235,23 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   Wrap endDateRow(DateTime endDate) {
     return Wrap(
       children: <Widget>[
-        Text("Data limite para a entrega: "),
-        Text(DateFormat("dd-MM-yyyy").format(endDate)),
+        Container(
+          child: Text(
+            "Data limite para a entrega: ",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Text(
+          DateFormat("dd/MM/yyyy").format(endDate),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+          ),
+        ),
       ],
     );
   }
@@ -209,7 +264,15 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           if (snapshot.data != null) {
             return getTextBasedOnType(type, snapshot.data);
           } else {
-            return Center(child: Text("Um erro ocorreu na consulta."),);
+            return Center(
+              child: Text(
+                "Um erro ocorreu na consulta.",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+            );
           }
         } else {
           return Center(
@@ -225,21 +288,49 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
       case "all":
         return Row(
           children: <Widget>[
-            Text("Total de entregas: " + amount.toString()),
+            Container(
+              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child: Text(
+                "Total de entregas: " + amount.toString(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         );
         break;
       case "nonRated":
         return Row(
           children: <Widget>[
-            Text("Não avaliados: " + amount.toString()),
+            Container(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                "Não avaliados: " + amount.toString(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         );
         break;
       default:
         return Row(
           children: <Widget>[
-            Text("Avaliados: " + amount.toString()),
+            Container(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                "Avaliados: " + amount.toString(),
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ],
         );
     }
@@ -259,9 +350,22 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                   initialValue: assignment.observations,
                   maxLines: 5,
                   decoration: new InputDecoration(
-                    icon: const Icon(Icons.text_fields),
+                    icon: const Icon(
+                      Icons.text_fields,
+                      color: Color(0xffED145B),
+                    ),
                     hintText: 'Digite suas observações...',
                     labelText: 'Observações',
+                    hintStyle: TextStyle(fontSize: 17.0),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
                   ),
                   validator: (value) {
                     return null;
@@ -273,17 +377,25 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: RaisedButton(
-                    child: Text("Salvar observações"),
-                    onPressed: () {
-                      if (observationsFormKey.currentState.validate()) {
-                        observationsFormKey.currentState.save();
-
-                        assignmentRepository.update(assignment);
-
-                        showSnackBar('Observações salvas com sucesso!');
-                      }
-                    },
+                  child: ButtonTheme(
+                    buttonColor: Theme.of(context).primaryColor,
+                    child: RaisedButton(
+                      child: Text(
+                        "Salvar Observações",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        if (observationsFormKey.currentState.validate()) {
+                          observationsFormKey.currentState.save();
+                          assignmentRepository.update(assignment);
+                          showSnackBar('Observações salvas com sucesso!');
+                        }
+                      },
+                    ),
                   ),
                 ),
               ],
