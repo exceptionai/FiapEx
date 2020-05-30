@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               settings: settings
             );
           case '/new':
-            return MyCustomRoute(
+            return MaterialPageRoute(
               builder: (_) => NewRowCallScreen(),
               settings: settings
             );
