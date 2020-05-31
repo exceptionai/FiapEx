@@ -20,9 +20,10 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
     return Scaffold(
       appBar: AppBarFiapEx(
         action: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-            child: Image.asset('assets/images/entregatrabalhos.png', height: 26),
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            child:
+                Image.asset('assets/images/entregatrabalhos.png', height: 26),
             onTap: () {
               Navigator.of(context).pushNamed('/assignment');
             },
@@ -39,9 +40,9 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
               child: Center(
                 child: Theme(
                   data: Theme.of(context).copyWith(
-                  canvasColor: Theme.of(context).primaryColor,
-                    ),
-                    child: Column(
+                    canvasColor: Theme.of(context).primaryColor,
+                  ),
+                  child: Column(
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
@@ -57,21 +58,25 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
                         child: DropdownButtonFormField<ClassModel>(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
                           ),
                           hint: Text("Selecione a turma"),
                           items: [
-                            ClassModel.withIdName(id: 1, name: "1TDSS"), 
-                            ClassModel.withIdName(id: 2, name: "3SIT"), 
-                            ClassModel.withIdName(id: 3, name: "3SIR")].map((label) => DropdownMenuItem(
-                                        child: Text(label.name),
-                                        value: ClassModel(),
-                                      ))
-                                  .toList(),
+                            ClassModel.withIdName(id: 1, name: "1TDSS"),
+                            ClassModel.withIdName(id: 2, name: "3SIT"),
+                            ClassModel.withIdName(id: 3, name: "3SIR")
+                          ]
+                              .map((label) => DropdownMenuItem(
+                                    child: Text(label.name),
+                                    value: ClassModel(),
+                                  ))
+                              .toList(),
                           validator: (ClassModel value) {
                             if (value == null) {
                               return "Uma turma deve ser selecionada.";
@@ -85,20 +90,26 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
                         child: DropdownButtonFormField<DisciplineModel>(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
                           ),
                           hint: Text("Selecione a matéria"),
                           items: [
-                            DisciplineModel.withIdName(id: 1, name: "Denvolvimento Cross Platform"), 
-                            DisciplineModel.withIdName(id: 1, name: "Desenvolvimento Mobile Híbrido")].map((label) => DropdownMenuItem(
-                                        child: Text(label.name),
-                                        value: label,
-                                      ))
-                                  .toList(),
+                            DisciplineModel.withIdName(
+                                id: 1, name: "Denvolvimento Cross Platform"),
+                            DisciplineModel.withIdName(
+                                id: 1, name: "Desenvolvimento Mobile Híbrido")
+                          ]
+                              .map((label) => DropdownMenuItem(
+                                    child: Text(label.name),
+                                    value: label,
+                                  ))
+                              .toList(),
                           validator: (DisciplineModel value) {
                             if (value == null) {
                               return "Uma matéria deve ser selecionada.";
@@ -119,33 +130,33 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
                             data: ThemeData(
                               cupertinoOverrideTheme: CupertinoThemeData(
                                 textTheme: CupertinoTextThemeData(
-                                dateTimePickerTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-                                pickerTextStyle: TextStyle(color: Colors.white, fontSize: 12),
+                                  dateTimePickerTextStyle: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                  pickerTextStyle: TextStyle(
+                                      color: Colors.white, fontSize: 12),
                                 ),
                               ),
                             ),
                             child: CupertinoDatePicker(
-        onDateTimeChanged: (DateTime newdate) {
-          rollModel.date = newdate;
-        },
-
-        use24hFormat: true,
-        maximumDate: new DateTime(2022, 12, 30),
-        minimumYear: 2010,
-        initialDateTime: DateTime.now(),
-        minuteInterval: 1,
-        mode: CupertinoDatePickerMode.date,
-      ),
+                              onDateTimeChanged: (DateTime newdate) {
+                                rollModel.date = newdate;
+                              },
+                              use24hFormat: true,
+                              maximumDate: new DateTime(2022, 12, 30),
+                              minimumYear: 2010,
+                              initialDateTime: DateTime.now(),
+                              minuteInterval: 1,
+                              mode: CupertinoDatePickerMode.date,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
+                      Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: RaisedButton(
                           color: Theme.of(context).primaryColor,
                           child: Text("Iniciar Chamada"),
                           onPressed: () {
-
                             if (rowCallFormKey.currentState.validate()) {
                               rowCallFormKey.currentState.save();
                               repository.saveRoll(rollModel);
