@@ -1,5 +1,6 @@
 
 import 'package:FiapEx/repository/db_connection.dart';
+import 'package:flutter/material.dart';
 
 class ClassModel{
   
@@ -9,6 +10,11 @@ class ClassModel{
   final String nameColumn = DbConnection.classTable["nameColumn"];
 
   ClassModel();
+
+  ClassModel.withIdName(
+    {@required this.id,
+    @required this.name,}
+  );
 
   ClassModel.fromMap(Map map){
     id = map[idColumn];

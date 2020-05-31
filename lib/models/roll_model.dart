@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 class RollModel{
   
   int id;
-  DateTime date;
-  bool done;
+  DateTime date = DateTime.now();
+  bool done = false;
   int idClass;
   int idDiscipline;
 

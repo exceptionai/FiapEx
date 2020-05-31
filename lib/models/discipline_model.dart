@@ -1,5 +1,6 @@
 
 import 'package:FiapEx/repository/db_connection.dart';
+import 'package:flutter/material.dart';
 
 class DisciplineModel{
   
@@ -9,6 +10,11 @@ class DisciplineModel{
   final String nameColumn = DbConnection.disciplineTable["nameColumn"];
 
   DisciplineModel();
+
+  DisciplineModel.withIdName(
+    {@required this.id,
+    @required this.name}
+  );
 
   DisciplineModel.fromMap(Map map){
     id = map[idColumn];

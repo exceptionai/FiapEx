@@ -1,11 +1,14 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/models/roll_model.dart';
 import 'package:FiapEx/tiles/student_row_call_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class RowCallScreen extends StatelessWidget {
-  const RowCallScreen({Key key}) : super(key: key);
+  
+  RollModel rollModel = new RollModel(); 
+  RowCallScreen(this.rollModel);
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +55,7 @@ class RowCallScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(17.0, 0, 0, 0),
                       child: Text(
-                        "3° ANO - 3SIT - 25/05/2020",
+                        "3° ANO - 3SIT - ${DateFormat('dd/MM/yyyy').format(rollModel.date)}",
                         style: TextStyle(
                           fontSize: 17.0,
                           fontWeight: FontWeight.bold,

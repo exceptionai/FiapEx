@@ -1,6 +1,7 @@
 import 'package:FiapEx/screens/assignment_deliveries_screen.dart';
 import 'package:FiapEx/screens/assignment_screen.dart';
 import 'package:FiapEx/screens/login_screen.dart';
+import 'package:FiapEx/screens/new_roll_call_screen.dart';
 import 'package:FiapEx/screens/row_call_history_screen.dart';
 import 'package:FiapEx/screens/row_call_screen.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
 
           case '/rowcall':
             return MyCustomRoute(
-              builder: (_) => RowCallScreen(),
+              builder: (_) => RowCallScreen(settings.arguments),
               settings: settings
             );
 
@@ -58,9 +59,14 @@ class MyApp extends StatelessWidget {
               builder: (_) => LoginScreen(),
               settings: settings
             );
+          case '/new':
+            return MaterialPageRoute(
+              builder: (_) => NewRowCallScreen(),
+              settings: settings
+            );
           default: 
             return MaterialPageRoute(
-              builder: (_) => RowCallScreen(),
+              builder: (_) => RowCallScreen(settings.arguments),
               settings: settings,
             );
         }
