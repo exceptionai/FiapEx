@@ -96,6 +96,10 @@ class _AssignmentDeliveriesScreenState
 
   Card deliveryCard(DeliveryModel delivery) {
     return Card(
+      margin: EdgeInsets.symmetric(
+        horizontal: 12.0,
+        vertical: 15.0,
+      ),
       color: Theme.of(context).accentColor,
       child: Container(
         decoration: BoxDecoration(
@@ -196,7 +200,12 @@ class _AssignmentDeliveriesScreenState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(snapshot.data[i].message),
+                          Text(
+                            snapshot.data[i].message,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ),

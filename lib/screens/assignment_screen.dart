@@ -85,7 +85,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
     return Card(
       elevation: 12.0,
       color: Color(0xff151819),
-      margin: new EdgeInsets.symmetric(
+      margin: EdgeInsets.symmetric(
         horizontal: 12.0,
         vertical: 15.0,
       ),
@@ -344,7 +344,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
 
   Row observationsForm(AssignmentModel assignment) {
     final GlobalKey<FormState> observationsFormKey = GlobalKey<FormState>();
-    
+
     return Row(
       children: <Widget>[
         Form(
