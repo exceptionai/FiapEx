@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
 
           case '/rowcall':
             return MyCustomRoute(
-              builder: (_) => RowCallScreen(),
+              builder: (_) => RowCallScreen(settings.arguments),
               settings: settings
             );
 
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
             );
           default: 
             return MaterialPageRoute(
-              builder: (_) => RowCallScreen(),
+              builder: (_) => RowCallScreen(settings.arguments),
               settings: settings,
             );
         }
