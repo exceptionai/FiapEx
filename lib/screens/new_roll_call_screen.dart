@@ -88,7 +88,10 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
   RaisedButton buildRaisedButton(BuildContext context) {
     return RaisedButton(
       color: Theme.of(context).primaryColor,
-      child: Text("Iniciar Chamada"),
+      child: Text(
+        "Iniciar Chamada",
+        style: TextStyle(color: Colors.white, fontSize: 17.0),
+      ),
       onPressed: () {
         if (rowCallFormKey.currentState.validate()) {
           rowCallFormKey.currentState.save();
@@ -110,7 +113,10 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
         enabledBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       ),
-      hint: Text("Selecione a matéria"),
+      hint: Text(
+        "Selecione a matéria",
+        style: TextStyle(fontSize: 17.0),
+      ),
       items: [
         DisciplineModel.withIdName(id: 1, name: "Denvolvimento Cross Platform"),
         DisciplineModel.withIdName(
@@ -141,7 +147,7 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
         enabledBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       ),
-      hint: Text("Selecione a turma"),
+      hint: Text("Selecione a turma", style: TextStyle(fontSize: 17.0)),
       items: [
         ClassModel.withIdName(id: 1, name: "1TDSS"),
         ClassModel.withIdName(id: 2, name: "3SIT"),
