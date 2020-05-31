@@ -35,145 +35,161 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
         child: Padding(
           padding: EdgeInsets.all(18.0),
           child: SingleChildScrollView(
-            child: Form(
-              key: rowCallFormKey,
-              child: Center(
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).primaryColor,
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 17.0),
-                          child: Text(
-                            "NOVA CHAMADA",
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
-                        child: DropdownButtonFormField<ClassModel>(
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                          ),
-                          hint: Text("Selecione a turma"),
-                          items: [
-                            ClassModel.withIdName(id: 1, name: "1TDSS"),
-                            ClassModel.withIdName(id: 2, name: "3SIT"),
-                            ClassModel.withIdName(id: 3, name: "3SIR")
-                          ]
-                              .map((label) => DropdownMenuItem(
-                                    child: Text(label.name),
-                                    value: ClassModel(),
-                                  ))
-                              .toList(),
-                          validator: (ClassModel value) {
-                            if (value == null) {
-                              return "Uma turma deve ser selecionada.";
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {},
-                          onChanged: (value) {
-                            rollModel.idClass = value.id;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
-                        child: DropdownButtonFormField<DisciplineModel>(
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                          ),
-                          hint: Text("Selecione a matéria"),
-                          items: [
-                            DisciplineModel.withIdName(
-                                id: 1, name: "Denvolvimento Cross Platform"),
-                            DisciplineModel.withIdName(
-                                id: 1, name: "Desenvolvimento Mobile Híbrido")
-                          ]
-                              .map((label) => DropdownMenuItem(
-                                    child: Text(label.name),
-                                    value: label,
-                                  ))
-                              .toList(),
-                          validator: (DisciplineModel value) {
-                            if (value == null) {
-                              return "Uma matéria deve ser selecionada.";
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {},
-                          onChanged: (value) {
-                            rollModel.idDiscipline = value.id;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 30.0),
-                        child: Container(
-                          height: 200,
-                          child: Theme(
-                            data: ThemeData(
-                              cupertinoOverrideTheme: CupertinoThemeData(
-                                textTheme: CupertinoTextThemeData(
-                                  dateTimePickerTextStyle: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                  pickerTextStyle: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                              ),
-                            ),
-                            child: CupertinoDatePicker(
-                              onDateTimeChanged: (DateTime newdate) {
-                                rollModel.date = newdate;
-                              },
-                              use24hFormat: true,
-                              maximumDate: new DateTime(2022, 12, 30),
-                              minimumYear: 2010,
-                              initialDateTime: DateTime.now(),
-                              minuteInterval: 1,
-                              mode: CupertinoDatePickerMode.date,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColor,
-                          child: Text("Iniciar Chamada"),
-                          onPressed: () {
-                            if (rowCallFormKey.currentState.validate()) {
-                              rowCallFormKey.currentState.save();
-                              repository.saveRoll(rollModel);
+            child: buildForm(context),
+          ),
+        ),
+      ),
+    );
+  }
 
-                              Navigator.of(context).pushReplacementNamed(
-                                '/rowcall',
-                                arguments: rollModel,
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    ],
+  Form buildForm(BuildContext context) {
+    return Form(
+      key: rowCallFormKey,
+      child: Center(
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Theme.of(context).primaryColor,
+          ),
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 17.0),
+                  child: Text(
+                    "NOVA CHAMADA",
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
+                child: buildDropdownButtonForClass(),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
+                child: buildDropdownButtonForDiscipline(),
+              ),
+              buildCupertinoDatePicker(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: buildRaisedButton(context),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  RaisedButton buildRaisedButton(BuildContext context) {
+    return RaisedButton(
+      color: Theme.of(context).primaryColor,
+      child: Text("Iniciar Chamada"),
+      onPressed: () {
+        if (rowCallFormKey.currentState.validate()) {
+          rowCallFormKey.currentState.save();
+          repository.saveRoll(rollModel);
+
+          Navigator.of(context).pushReplacementNamed(
+            '/rowcall',
+            arguments: rollModel,
+          );
+        }
+      },
+    );
+  }
+
+  DropdownButtonFormField<DisciplineModel> buildDropdownButtonForDiscipline() {
+    return DropdownButtonFormField<DisciplineModel>(
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+      ),
+      hint: Text("Selecione a matéria"),
+      items: [
+        DisciplineModel.withIdName(id: 1, name: "Denvolvimento Cross Platform"),
+        DisciplineModel.withIdName(
+            id: 1, name: "Desenvolvimento Mobile Híbrido")
+      ]
+          .map((label) => DropdownMenuItem(
+                child: Text(label.name),
+                value: label,
+              ))
+          .toList(),
+      validator: (DisciplineModel value) {
+        if (value == null) {
+          return "Uma matéria deve ser selecionada.";
+        }
+        return null;
+      },
+      onSaved: (value) {},
+      onChanged: (value) {
+        rollModel.idDiscipline = value.id;
+      },
+    );
+  }
+
+  DropdownButtonFormField<ClassModel> buildDropdownButtonForClass() {
+    return DropdownButtonFormField<ClassModel>(
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+      ),
+      hint: Text("Selecione a turma"),
+      items: [
+        ClassModel.withIdName(id: 1, name: "1TDSS"),
+        ClassModel.withIdName(id: 2, name: "3SIT"),
+        ClassModel.withIdName(id: 3, name: "3SIR")
+      ]
+          .map((label) => DropdownMenuItem(
+                child: Text(label.name),
+                value: ClassModel(),
+              ))
+          .toList(),
+      validator: (ClassModel value) {
+        if (value == null) {
+          return "Uma turma deve ser selecionada.";
+        }
+        return null;
+      },
+      onSaved: (value) {},
+      onChanged: (value) {
+        rollModel.idClass = value.id;
+      },
+    );
+  }
+
+  Padding buildCupertinoDatePicker() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30.0),
+      child: Container(
+        height: 200,
+        child: Theme(
+          data: ThemeData(
+            cupertinoOverrideTheme: CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle:
+                    TextStyle(color: Colors.white, fontSize: 16),
+                pickerTextStyle: TextStyle(color: Colors.white, fontSize: 12),
+              ),
             ),
+          ),
+          child: CupertinoDatePicker(
+            onDateTimeChanged: (DateTime newdate) {
+              rollModel.date = newdate;
+            },
+            use24hFormat: true,
+            maximumDate: new DateTime(2022, 12, 30),
+            minimumYear: 2010,
+            initialDateTime: DateTime.now(),
+            minuteInterval: 1,
+            mode: CupertinoDatePickerMode.date,
           ),
         ),
       ),
