@@ -9,16 +9,19 @@ class RowCallHistoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).primaryColor),
-          borderRadius: BorderRadius.circular(15)),
+        border: Border.all(color: Theme.of(context).primaryColor),
+        borderRadius: BorderRadius.circular(15),
+      ),
       padding: EdgeInsets.symmetric(vertical: 8),
       margin: EdgeInsets.only(bottom: 15),
       child: Theme(
-        data: Theme.of(context).copyWith(textTheme: TextTheme(
-          subtitle1:  TextStyle(color: Colors.white,fontSize: 20,
-          fontFamily: 'GothamHTF',),
-        ),),
-              child: ListTile(
+        data: Theme.of(context).copyWith(
+          textTheme: TextTheme(
+              //subtitle1:  TextStyle(color: Colors.white,fontSize: 20,
+              //fontFamily: 'GothamHTF',),
+              ),
+        ),
+        child: ListTile(
           onTap: () {
             Navigator.of(context).pushNamed('/rowcall');
           },
@@ -45,9 +48,11 @@ class RowCallHistoryTile extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Text('Alunos: ', style: TextStyle(fontSize: 14)),
-                  Text('40',
-                      style:
-                          TextStyle(fontSize: 16, color: Colors.lightBlueAccent)),
+                  Text(
+                    '40',
+                    style:
+                        TextStyle(fontSize: 16, color: Colors.lightBlueAccent),
+                  ),
                   SizedBox(
                     width: 10,
                   ),
@@ -55,33 +60,40 @@ class RowCallHistoryTile extends StatelessWidget {
                     'Ausentes: ',
                     style: TextStyle(fontSize: 14),
                   ),
-                  Text('12',
-                      style: TextStyle(fontSize: 16, color: Colors.redAccent)),
+                  Text(
+                    '12',
+                    style: TextStyle(fontSize: 16, color: Colors.redAccent),
+                  ),
                   SizedBox(
                     width: 10,
                   ),
-                  Text('Presentes: ', style: TextStyle(fontSize: 14)),
-                  Text('28 ',
-                      style: TextStyle(fontSize: 16, color: Colors.greenAccent)),
+                  Text(
+                    'Presentes: ',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  Text(
+                    '28 ',
+                    style: TextStyle(fontSize: 16, color: Colors.greenAccent),
+                  ),
                 ],
               )
             ],
           ),
           leading: done
               ? Padding(
-                padding: const EdgeInsets.only(top:8.0),
-                child: Image.asset(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
                     'assets/images/presenteicone.png',
                     width: 40,
                   ),
-              )
+                )
               : Padding(
-                padding: const EdgeInsets.only(top:8.0),
-                child: Image.asset(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
                     'assets/images/pendenteicone.png',
                     width: 40,
                   ),
-              ),
+                ),
         ),
       ),
     );
