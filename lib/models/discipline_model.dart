@@ -1,5 +1,6 @@
 
 import 'package:FiapEx/repository/db_connection.dart';
+import 'package:flutter/material.dart';
 
 class DisciplineModel{
   
@@ -9,6 +10,22 @@ class DisciplineModel{
   final String nameColumn = DbConnection.disciplineTable["nameColumn"];
 
   DisciplineModel();
+
+  @override
+  int get hashCode{
+    return id;
+  }
+
+  @override
+  bool operator ==(other) {
+    // TODO: implement ==
+    return id == other.id;
+  }
+
+  DisciplineModel.withIdName(
+    {@required this.id,
+    @required this.name}
+  );
 
   DisciplineModel.fromMap(Map map){
     id = map[idColumn];
@@ -27,6 +44,7 @@ class DisciplineModel{
   String toString(){
     return "Discipline (id: $id, name: $name)";
   }
+
 
 
 }

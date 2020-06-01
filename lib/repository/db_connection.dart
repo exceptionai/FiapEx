@@ -140,13 +140,13 @@ class DbConnection {
          ${rollTable["fkClassColumn"]} INTEGER,
          ${rollTable["fkDisciplineColumn"]} INTEGER,
          FOREIGN KEY (${rollTable["fkClassColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}),
-         FOREIGN KEY (${rollTable["fkDisciplineColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}));""",
+         FOREIGN KEY (${rollTable["fkDisciplineColumn"]}) references ${disciplineTable["tableName"]} (${disciplineTable["idColumn"]}));""",
       """CREATE TABLE ${rollRegisterTable["tableName"]}(
-         ${rollRegisterTable["idColumn"]} INTEGER PRIMARY KEY,
          ${rollRegisterTable["fkStudentColumn"]} INTEGER,
          ${rollRegisterTable["fkRollColumn"]} INTEGER,
-         ${rollRegisterTable["presenceColumn"]} TEXT,
+         ${rollRegisterTable["presenceColumn"]} INTEGER,
          ${rollRegisterTable["registerDateColumn"]} TEXT,
+         PRIMARY KEY (${rollRegisterTable["fkStudentColumn"]}, ${rollRegisterTable["fkRollColumn"]}),
          FOREIGN KEY (${rollRegisterTable["fkStudentColumn"]}) references ${studentTable["tableName"]} (${studentTable["idColumn"]}),
          FOREIGN KEY (${rollRegisterTable["fkRollColumn"]}) references ${rollTable["tableName"]} (${rollTable["idColumn"]}));""",
       """CREATE TABLE ${assignmentTable["tableName"]}(
@@ -307,6 +307,72 @@ class DbConnection {
         ${rollTable["doneColumn"]},
         ${rollTable["fkClassColumn"]},
         ${rollTable["fkDisciplineColumn"]}) VALUES ('2020-05-27T01:45:29.185Z',1,1,1);""",
+
+      """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (1,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+             """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (3,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+             """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (5,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (7,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (9,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (11,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (13,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (15,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (17,2, 0, '2020-05-27T01:45:29.185Z'); """,
+   
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {

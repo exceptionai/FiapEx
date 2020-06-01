@@ -9,15 +9,23 @@ class RollRepository{
   final String table = DbConnection.rollTable["tableName"];
   final String idColumn = DbConnection.rollTable["idColumn"];
   final String nameColumn = DbConnection.rollTable["nameColumn"];
+  final String doneColumn = DbConnection.rollTable["doneColumn"];
+  final String dateColumn = DbConnection.rollTable["dateColumn"];
  
   Future<List<RollModel>> getAllRolles() async {
     Database db = await dbConnection.db;
-    List listMap = await db.rawQuery("SELECT * FROM $table;");
+    List listMap = await db.rawQuery("SELECT * FROM $table ORDER BY $dateColumn DESC;");
     List<RollModel> listModel = List();
     for(Map m in listMap){
       listModel.add(RollModel.fromMap(m));
     }
     return listModel;
+  }
+
+  Future<int> finishRowCall({int rowCallId, String date}) async{
+    Database db = await dbConnection.db;
+
+    return await db.rawUpdate("UPDATE $table SET $doneColumn = 1, $dateColumn = '$date' WHERE $idColumn = $rowCallId");
   }
 
   Future<RollModel> saveRoll(RollModel model) async {

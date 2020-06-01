@@ -1,5 +1,5 @@
-import 'package:FiapEx/models/student.dart';
 import 'package:FiapEx/repository/db_connection.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 class RollRegisterRepository{
@@ -23,17 +23,17 @@ class RollRegisterRepository{
     return listMap;
   }
 
-  Future<bool> saveRollRegister(int idRoll, int idStudent, String presence) async {
+  Future<bool> saveRollRegister(int idRoll, int idStudent, bool presence) async {
     Database db = await dbConnection.db;
 
     Map <String,dynamic> map = {
       idStudentColumn : idStudent,
       idRollColumn : idRoll,
-      presenceColumn : presence,
+      presenceColumn : presence ? 1 : 0,
       registerDateColumn : DateTime.now().toString()
     };
     
-    int id = await db.insert(rollRegisterTable, map);
+    int id = await db.insert(rollRegisterTable, map, conflictAlgorithm: ConflictAlgorithm.replace);
     if(id != null){
       return true;
     }else{
@@ -41,6 +41,18 @@ class RollRegisterRepository{
     }
 
   }
+
+  Future<List<int>> getPresenceStudent(int presence, {@required int rowCallId}) async{
+    Database db = await dbConnection.db;
+    List<Map> students = await db.rawQuery("SELECT DISTINCT $idStudentColumn FROM $rollRegisterTable WHERE $idRollColumn = $rowCallId AND $presenceColumn = $presence ORDER BY $registerDateColumn");
+    List<int> listPresenceStudents = List<int>();
+    for(Map studentIdMap in students){
+      listPresenceStudents.add(studentIdMap["$idStudentColumn"]);
+    }
+    return listPresenceStudents;
+  }
+
+
 
   Future<List<Map>> getRollRegisterByRollid(int id) async {
     Database db = await dbConnection.db;
@@ -62,10 +74,10 @@ class RollRegisterRepository{
     }
   }
 
-  Future<int> presentStudentsCount(rowCallId) async{
+  Future<int> presenceStudentsCount({int rowCallId, int presence}) async{
 
     Database db = await dbConnection.db;
-    int quantidade = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM $rollRegisterTable WHERE $idRollColumn = $rowCallId"));
+    int quantidade = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM $rollRegisterTable WHERE $idRollColumn = $rowCallId AND $presenceColumn = $presence"));
     return quantidade;
 
   }

@@ -1,13 +1,21 @@
 
+import 'package:FiapEx/models/class_model.dart';
+import 'package:FiapEx/models/discipline_model.dart';
+import 'package:FiapEx/models/student.dart';
 import 'package:FiapEx/repository/db_connection.dart';
 import 'package:intl/intl.dart';
 
 class RollModel{
   
   int id;
-  DateTime date;
-  bool done;
+  DateTime date = DateTime.now();
+  bool done = false;
   int idClass;
+  List<StudentModel> students;
+  int presentStudents;
+  int absentStudents;
+  ClassModel studentClass;
+  DisciplineModel discipline;
   int idDiscipline;
 
   final Map<int,String> weekDay = {
@@ -36,7 +44,7 @@ class RollModel{
     }else if (map[doneColumn] == 0){
       done = false;
     }else{
-      done = null;
+      done = false;
     }
     idClass = map[idClassColumn];
     idDiscipline = map[idDisciplineColumn];

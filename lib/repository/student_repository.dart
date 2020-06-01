@@ -8,16 +8,19 @@ class StudentRepository{
   final String table = DbConnection.studentTable["tableName"];
   final String idColumn = DbConnection.studentTable["idColumn"];
   final String nameColumn = DbConnection.studentTable["nameColumn"];
+  final String idClassColumn = DbConnection.studentTable["classFkColumn"];
 
-  Future<List<StudentModel>> getAllStudents() async {
+  Future<List<StudentModel>> getAllStudentsByClass(int idClass) async {
     Database db = await dbConnection.db;
-    List listMap = await db.rawQuery("SELECT * FROM $table;");
+    List listMap = await db.rawQuery("SELECT * FROM $table WHERE $idClassColumn = $idClass;");
     List<StudentModel> listModel = List();
     for(Map m in listMap){
       listModel.add(StudentModel.fromMap(m));
     }
     return listModel;
   }
+
+
 
   Future<StudentModel> saveStudent(StudentModel model) async {
     Database db = await dbConnection.db;

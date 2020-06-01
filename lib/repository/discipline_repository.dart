@@ -6,12 +6,25 @@ class DisciplineRepository{
 
   final DbConnection dbConnection = DbConnection();
   final String table = DbConnection.disciplineTable["tableName"];
+  final String tableClassDisciplineName = DbConnection.classDisciplineTable["tableName"];
   final String idColumn = DbConnection.disciplineTable["idColumn"];
   final String nameColumn = DbConnection.disciplineTable["nameColumn"];
+  final String classColumnClassDiscipline = DbConnection.classDisciplineTable["fkClassColumn"];
+  final String idColumnClassDiscipline = DbConnection.classDisciplineTable["fkDisciplineColumn"];
 
   Future<List> getAllDisciplines() async {
     Database db = await dbConnection.db;
     List listMap = await db.rawQuery("SELECT * FROM $table;");
+    List<DisciplineModel> listModel = List();
+    for(Map m in listMap){
+      listModel.add(DisciplineModel.fromMap(m));
+    }
+    return listModel;
+  }
+
+  getAllDisciplinesByClass({int classId}) async {
+    Database db = await dbConnection.db;
+    List listMap = await db.rawQuery("SELECT d.* FROM $tableClassDisciplineName cd INNER JOIN $table d ON d.$idColumn = cd.$idColumnClassDiscipline WHERE cd.$classColumnClassDiscipline = $classId ;");
     List<DisciplineModel> listModel = List();
     for(Map m in listMap){
       listModel.add(DisciplineModel.fromMap(m));

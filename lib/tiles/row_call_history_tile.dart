@@ -1,8 +1,7 @@
 import 'package:FiapEx/models/class_model.dart';
 import 'package:FiapEx/models/discipline_model.dart';
 import 'package:FiapEx/models/roll_model.dart';
-import 'package:FiapEx/repository/class_repository.dart';
-import 'package:FiapEx/repository/discipline_repository.dart';
+import 'package:FiapEx/models/student.dart';
 import 'package:FiapEx/repository/rollRegister_repository.dart';
 import 'package:FiapEx/repository/student_repository.dart';
 import 'package:flutter/material.dart';
@@ -10,56 +9,72 @@ import 'package:intl/intl.dart';
 
 class RowCallHistoryTile extends StatefulWidget {
 
-  RollModel rowCallHistory;
+  RollModel rowModel;
+  VoidCallback onChanged;
 
-  RowCallHistoryTile(this.rowCallHistory){}
+  RowCallHistoryTile({this.rowModel, this.onChanged});
 
   @override
   _RowCallHistoryTileState createState() => _RowCallHistoryTileState();
 }
 
 class _RowCallHistoryTileState extends State<RowCallHistoryTile> {
-  ClassRepository classRepository = new ClassRepository();
   StudentRepository studentRepository = new StudentRepository();
 
-  DisciplineRepository disciplineRepository = new DisciplineRepository();
   RollRegisterRepository rollRegisterRepository = new RollRegisterRepository();
 
   ClassModel rowCallClass;
 
   DisciplineModel rowCallDiscipline;
   int rowCallPresentStudentsCount;
+  int rowCallAbsentStudentsCount;
   int studentsCount;
 
   @override
   void initState() { 
     super.initState();
-    
+    getHistoryTileData();
+  }
+
+  getHistoryTileData(){
     getRowCallHistoryClass();
     getRowCallDiscipline();
     getRowCallPresentStudentsCount();
-    getRowCallStudentsCount();
+    getRowCallAbsentStudentsCount();
+  
   }
 
   getRowCallStudentsCount() async{
-    List students = await studentRepository.getAllStudents();
-    studentsCount = students.length;
-    setState((){});
+    List<StudentModel> students = widget.rowModel.students;
+    setState((){
+      studentsCount = students.length;
+    });
   }
 
   getRowCallPresentStudentsCount() async{
-    rowCallPresentStudentsCount = await rollRegisterRepository.presentStudentsCount(widget.rowCallHistory.id);
-    setState((){});
+    setState((){
+      rowCallPresentStudentsCount = widget.rowModel.presentStudents;
+    });
+  }
+
+  getRowCallAbsentStudentsCount() async{
+    setState((){
+      rowCallAbsentStudentsCount = widget.rowModel.absentStudents;
+    });
   }
 
   getRowCallHistoryClass() async{
-    rowCallClass = await classRepository.getClass(widget.rowCallHistory.idClass);
-    setState((){});
+    setState((){
+      rowCallClass = widget.rowModel.studentClass;
+
+      getRowCallStudentsCount();
+    });
   }
 
   getRowCallDiscipline() async{
-    rowCallDiscipline = await disciplineRepository.getDiscipline(widget.rowCallHistory.idDiscipline);
-    setState((){});
+    setState((){
+      rowCallDiscipline = widget.rowModel.discipline;
+    });
   }
 
   @override
@@ -76,8 +91,9 @@ class _RowCallHistoryTileState extends State<RowCallHistoryTile> {
           fontFamily: 'GothamHTF',),
         ),),
               child: ListTile(
-          onTap: () {
-            Navigator.of(context).pushNamed('/rowcall');
+          onTap: () async {
+            await Navigator.of(context).pushNamed('/rowcall', arguments: widget.rowModel);
+            widget.onChanged();
           },
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,13 +106,13 @@ class _RowCallHistoryTileState extends State<RowCallHistoryTile> {
               Row(
                 children: <Widget>[
                   Text('Data: ', style: TextStyle(fontSize: 14)),
-                  Text('${DateFormat('dd/MM/yyyy').format(widget.rowCallHistory.date)}', style: TextStyle(fontSize: 16)),
+                  Text('${DateFormat('dd/MM/yyyy').format(widget.rowModel.date)}', style: TextStyle(fontSize: 16)),
                 ],
               ),
               Row(
                 children: <Widget>[
                   Text('Status: ', style: TextStyle(fontSize: 14)),
-                  Text('${widget.rowCallHistory.done ? 'Finalizado' : 'Pendente'}', style: TextStyle(fontSize: 16)),
+                  Text('${widget.rowModel.done ? 'Finalizado' : 'Pendente'}', style: TextStyle(fontSize: 16)),
                 ],
               ),
               Row(
@@ -112,7 +128,7 @@ class _RowCallHistoryTileState extends State<RowCallHistoryTile> {
                     'Ausentes: ',
                     style: TextStyle(fontSize: 14),
                   ),
-                  Text('${rowCallPresentStudentsCount != null && studentsCount != null ? studentsCount - rowCallPresentStudentsCount  : ''}',
+                  Text('${rowCallAbsentStudentsCount != null ? rowCallAbsentStudentsCount : ''}',
                       style: TextStyle(fontSize: 16, color: Colors.redAccent)),
                   SizedBox(
                     width: 10,
@@ -125,7 +141,7 @@ class _RowCallHistoryTileState extends State<RowCallHistoryTile> {
             ],
           ),
           leading: 
-             widget?.rowCallHistory?.done != null && widget.rowCallHistory.done ? Padding(
+             widget?.rowModel?.done != null && widget.rowModel.done ? Padding(
                 padding: const EdgeInsets.only(top:8.0),
                 child: Image.asset(
                     'assets/images/presenteicone.png',
