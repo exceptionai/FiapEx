@@ -81,8 +81,9 @@ class _RowCallHistoryTileState extends State<RowCallHistoryTile> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).primaryColor),
-          borderRadius: BorderRadius.circular(15)),
+        border: Border.all(color: Theme.of(context).primaryColor),
+        borderRadius: BorderRadius.circular(15),
+      ),
       padding: EdgeInsets.symmetric(vertical: 8),
       margin: EdgeInsets.only(bottom: 15),
       child: Theme(
@@ -147,14 +148,14 @@ class _RowCallHistoryTileState extends State<RowCallHistoryTile> {
                     'assets/images/presenteicone.png',
                     width: 40,
                   ),
-              )
+                )
               : Padding(
-                padding: const EdgeInsets.only(top:8.0),
-                child: Image.asset(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
                     'assets/images/pendenteicone.png',
                     width: 40,
                   ),
-              ),
+                ),
         ),
       ),
     );

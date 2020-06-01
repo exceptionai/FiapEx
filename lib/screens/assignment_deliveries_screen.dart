@@ -37,13 +37,18 @@ class _AssignmentDeliveriesScreenState
           action: Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
-          child: Icon(Icons.chevron_left,color: Theme.of(context).primaryColor,),
+          child: Icon(
+            Icons.chevron_left,
+            color: Theme.of(context).primaryColor,
+          ),
           onTap: () {
             Navigator.of(context).pop();
           },
         ),
       )),
-      drawer: DrawerFiapEx(route: '/assignment',),
+      drawer: DrawerFiapEx(
+        route: '/assignment',
+      ),
       body: Container(
         color: Theme.of(context).accentColor,
         child: Column(
@@ -91,27 +96,59 @@ class _AssignmentDeliveriesScreenState
 
   Card deliveryCard(DeliveryModel delivery) {
     return Card(
-      child: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: Container(
-          child: ListTile(
-            title: Container(
-              child: Column(
-                children: <Widget>[
-                  Text("Integrantes: "),
-                  students(delivery.id),
-                ],
+      margin: EdgeInsets.symmetric(
+        horizontal: 12.0,
+        vertical: 15.0,
+      ),
+      color: Theme.of(context).accentColor,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).accentColor,
+          border: Border.all(color: Theme.of(context).primaryColor),
+          borderRadius: BorderRadius.circular(15.0),
+        ),        
+        child: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Container(
+            child: Theme(
+
+data: Theme.of(context).copyWith(textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white38))),                          child: ListTile(
+                title: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(bottom: 20.0),
+                        child: Text(
+                          "Integrantes: ",
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      students(delivery.id),
+                    ],
+                  ),
+                ),
+                subtitle: Column(
+                  children: <Widget>[
+                    deliveryDateRow(delivery),
+                    gradeForm(delivery),
+                    gradeGivenDateText(delivery),
+                    Text(
+                      "Comentários:",
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    comments(delivery.id),
+                    commentForm(delivery.id),
+                  ],
+                ),
               ),
-            ),
-            subtitle: Column(
-              children: <Widget>[
-                deliveryDateRow(delivery),
-                gradeForm(delivery),
-                gradeGivenDateText(delivery),
-                Text("Comentários:"),
-                comments(delivery.id),
-                commentForm(delivery.id),
-              ],
             ),
           ),
         ),
@@ -130,8 +167,13 @@ class _AssignmentDeliveriesScreenState
             );
           } else {
             return Center(
-              child:
-                  Text("Algo deu errado... Não há integrantes cadastrados?!"),
+              child: Text(
+                "Algo deu errado... Não há integrantes cadastrados?!",
+                style: TextStyle(
+                  fontSize: 17.0,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             );
           }
         } else {
@@ -159,7 +201,12 @@ class _AssignmentDeliveriesScreenState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(snapshot.data[i].message),
+                          Text(
+                            snapshot.data[i].message,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -196,6 +243,7 @@ class _AssignmentDeliveriesScreenState
     return Wrap(
       children: <Widget>[
         Container(
+          color: Theme.of(context).accentColor,
           child: Text(
             "Entregue: " + formatter.format(delivery.deliveryDate),
           ),
@@ -207,7 +255,8 @@ class _AssignmentDeliveriesScreenState
   Text gradeGivenDateText(DeliveryModel delivery) {
     if (delivery.gradeGivenDate != null) {
       return Text(
-          "Nota publicada: " + formatter.format(delivery.gradeGivenDate));
+        "Nota publicada: " + formatter.format(delivery.gradeGivenDate),
+      );
     } else {
       return Text("A nota para esta entrega ainda não foi publicada.");
     }
@@ -226,7 +275,10 @@ class _AssignmentDeliveriesScreenState
       }
     }
 
-    return Text(studentsString);
+    return Text(
+      studentsString,
+      style: TextStyle(color: Colors.white, fontSize: 20.0),
+    );
   }
 
   Form gradeForm(DeliveryModel delivery) {
@@ -234,54 +286,71 @@ class _AssignmentDeliveriesScreenState
 
     return Form(
       key: gradeFormKey,
-      child: Column(
-        children: <Widget>[
-          TextFormField(
-            initialValue:
-                delivery.grade != null ? delivery.grade.toString() : '',
-            decoration: new InputDecoration(
-              icon: const Icon(Icons.text_fields),
-              hintText: 'Nota...',
-              labelText: 'Nota',
-            ),
-            validator: (value) {
-              if ((value.isEmpty)) {
-                return 'Digite uma nota!';
-              } else if (double.parse(value) < 0) {
-                return 'A nota mínima é 0!';
-              } else if (double.parse(value) > 10) {
-                return 'A nota máxima é 10!';
-              }
-
-              return null;
-            },
-            keyboardType: TextInputType.number,
-            onSaved: (value) {
-              delivery.grade = double.parse(value);
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: RaisedButton(
-              child: Text("Avaliar"),
-              onPressed: () {
-                if (gradeFormKey.currentState.validate()) {
-                  delivery.gradeGivenDate = DateTime.now();
-
-                  gradeFormKey.currentState.save();
-
-                  assignmentDeliveryRepository.update(delivery);
-
-                  showSnackBar('Nota salva com sucesso!');
-
-                  if (this.mounted) {
-                    setState(() {});
-                  }
+      child: Container(
+        color: Theme.of(context).accentColor,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              initialValue:
+                  delivery.grade != null ? delivery.grade.toString() : '',
+              decoration: new InputDecoration(
+                icon: const Icon(
+                  Icons.text_fields,
+                  color: Color(0xffED145B),
+                ),
+                hintText: 'Nota...',
+                labelText: 'Nota',
+                labelStyle: TextStyle(color: Color(0xffED145B), fontSize: 20.0),
+              ),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 17.0,
+              ),
+              validator: (value) {
+                if ((value.isEmpty)) {
+                  return 'Digite uma nota!';
+                } else if (double.parse(value) < 0) {
+                  return 'A nota mínima é 0!';
+                } else if (double.parse(value) > 10) {
+                  return 'A nota máxima é 10!';
                 }
+
+                return null;
+              },
+              keyboardType: TextInputType.number,
+              onSaved: (value) {
+                delivery.grade = double.parse(value);
               },
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ButtonTheme(
+                buttonColor: Theme.of(context).primaryColor,
+                child: RaisedButton(
+                  child: Text(
+                    "Avaliar",
+                    style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    if (gradeFormKey.currentState.validate()) {
+                      delivery.gradeGivenDate = DateTime.now();
+
+                      gradeFormKey.currentState.save();
+
+                      assignmentDeliveryRepository.update(delivery);
+
+                      showSnackBar('Nota salva com sucesso!');
+
+                      if (this.mounted) {
+                        setState(() {});
+                      }
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -297,9 +366,17 @@ class _AssignmentDeliveriesScreenState
         children: <Widget>[
           TextFormField(
             decoration: new InputDecoration(
-              icon: const Icon(Icons.text_fields),
+              icon: const Icon(
+                Icons.text_fields,
+                color: Color(0xffED145B),
+              ),
               hintText: 'Adicione um comentário...',
               labelText: 'Comentário',
+              labelStyle: TextStyle(color: Color(0xffED145B), fontSize: 20.0),
+            ),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 17.0,
             ),
             validator: (value) {
               if ((value.isEmpty)) {
@@ -315,23 +392,29 @@ class _AssignmentDeliveriesScreenState
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: RaisedButton(
-              child: Text("Postar"),
-              onPressed: () {
-                if (commentFormKey.currentState.validate()) {
-                  comment.date = DateTime.now();
+            child: ButtonTheme(
+              buttonColor: Theme.of(context).primaryColor,
+              child: RaisedButton(
+                child: Text(
+                  "Postar",
+                  style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  if (commentFormKey.currentState.validate()) {
+                    comment.date = DateTime.now();
 
-                  commentFormKey.currentState.save();
+                    commentFormKey.currentState.save();
 
-                  commentRepository.create(comment);
+                    commentRepository.create(comment);
 
-                  showSnackBar('Comentário publicado com sucesso!');
+                    showSnackBar('Comentário publicado com sucesso!');
 
-                  if (this.mounted) {
-                    setState(() {});
+                    if (this.mounted) {
+                      setState(() {});
+                    }
                   }
-                }
-              },
+                },
+              ),
             ),
           ),
         ],

@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
       title: 'Fiap Ex',
       theme: ThemeData(
         textTheme:  TextTheme(
-          bodyText1: TextStyle(color: Colors.white),
-          bodyText2: TextStyle(color: Colors.white,fontSize: 20),
+         bodyText1: TextStyle(color: Colors.white),
+         bodyText2: TextStyle(color: Colors.white,fontSize: 20),
+         
         ),
         
         primaryColor: const Color(0xffED145B),
