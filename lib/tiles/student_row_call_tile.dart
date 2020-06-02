@@ -114,6 +114,7 @@ class _StudentRowCallTileState extends State<StudentRowCallTile> {
 
   _showModalStudent(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -122,7 +123,7 @@ class _StudentRowCallTileState extends State<StudentRowCallTile> {
         backgroundColor: Theme.of(context).accentColor,
         builder: (BuildContext context) {
           return Container(
-            height: 800,
+            height: 420,
             padding: EdgeInsets.all(15.0),
             child: ListView(
               children: <Widget>[
