@@ -124,7 +124,7 @@ class _StudentRowCallTileState extends State<StudentRowCallTile> {
           return Container(
             height: 800,
             padding: EdgeInsets.all(15.0),
-            child: Column(
+            child: ListView(
               children: <Widget>[
                 Container(
                   height: 200,
@@ -204,6 +204,7 @@ class _StudentRowCallTileState extends State<StudentRowCallTile> {
                 widget.rowCall.done
                     ? Container()
                     : Row(
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           FlatButton(

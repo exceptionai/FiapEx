@@ -156,6 +156,7 @@ class _RowCallScreenState extends State<RowCallScreen> {
               widget.rollModel.done ? 
                  Container(
                    margin: EdgeInsets.only(top: 30),
+                   padding: EdgeInsets.only(bottom: 30),
                    child: Column(
                      children: <Widget>[
                        Row(
