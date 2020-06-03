@@ -11,6 +11,17 @@ class DisciplineModel{
 
   DisciplineModel();
 
+  @override
+  int get hashCode{
+    return id;
+  }
+
+  @override
+  bool operator ==(other) {
+    // TODO: implement ==
+    return id == other.id;
+  }
+
   DisciplineModel.withIdName(
     {@required this.id,
     @required this.name}
@@ -33,6 +44,7 @@ class DisciplineModel{
   String toString(){
     return "Discipline (id: $id, name: $name)";
   }
+
 
 
 }

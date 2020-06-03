@@ -1,5 +1,6 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/components/observation_form_fiap_ex.dart';
 import 'package:FiapEx/models/assignment_model.dart';
 import 'package:FiapEx/models/class_model.dart';
 import 'package:FiapEx/models/discipline_model.dart';
@@ -19,8 +20,29 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   AssignmentRepository assignmentRepository = AssignmentRepository();
   ClassRepository classRepository = ClassRepository();
   DisciplineRepository disciplineRepository = DisciplineRepository();
+  List<AssignmentModel> assignments = List<AssignmentModel>();
+  bool loadingAssignments = true;
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() { 
+    super.initState();
+    getAssignments();
+  }
+
+  @override
+  void didUpdateWidget(AssignmentScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    
+  }
+
+  getAssignments() async{
+    assignments = await assignmentRepository.findAll();
+    setState(() {
+      loadingAssignments = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,43 +59,39 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           ),
         ),
       ),
-      resizeToAvoidBottomPadding: false,
       drawer: DrawerFiapEx(route: '/assignment'),
       body: Container(
         width: MediaQuery.of(context).size.width,
         color: Theme.of(context).accentColor,
         child: Container(
-          child: FutureBuilder<List>(
-            future: assignmentRepository.findAll(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data.length > 0) {
-                  return buildListView(snapshot.data);
-                } else {
-                  return Center(
-                    child: Text(
-                      "Nenhum trabalho cadastrado!",
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  );
-                }
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
+          child: _buildAssignments()
         ),
       ),
     );
   }
 
-  ListView buildListView(List<AssignmentModel> assignments) {
+  Widget _buildAssignments(){
+    if (assignments.length > 0 && !loadingAssignments) {
+      return buildListView();
+    } else if(!loadingAssignments) {
+      return Center(
+        child: Text(
+          "Nenhum trabalho cadastrado!",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 20.0,
+          ),
+        ),
+      );
+    }
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  ListView buildListView() {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: assignments == null ? 0 : assignments.length,
       itemBuilder: (BuildContext ctx, int index) {
         return assignmentCard(assignments[index]);
@@ -127,6 +145,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             await Navigator.of(context)
                 .pushNamed("/assignment_deliveries", arguments: assignment);
             if (this.mounted) {
+              getAssignments();
               setState(() {});
             }
           },
@@ -144,7 +163,12 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         buildCardSubtitleData(assignment.id, "all"),
         buildCardSubtitleData(assignment.id, "nonRated"),
         buildCardSubtitleData(assignment.id, "rated"),
-        observationsForm(assignment),
+        ObservationForm(observations: assignment.observations,onSave: (String observations){
+          assignment.observations = observations;
+          assignmentRepository.update(assignment);
+          showSnackBar('Observações salvas com sucesso!');
+
+        },),
       ],
     );
   }
@@ -343,8 +367,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   Row observationsForm(AssignmentModel assignment) {
-    final GlobalKey<FormState> observationsFormKey = GlobalKey<FormState>();
-
+  final GlobalKey<FormState> observationsFormKey = GlobalKey<FormState>();
     return Row(
       children: <Widget>[
         Form(
@@ -407,8 +430,6 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       onPressed: () {
                         if (observationsFormKey.currentState.validate()) {
                           observationsFormKey.currentState.save();
-                          assignmentRepository.update(assignment);
-                          showSnackBar('Observações salvas com sucesso!');
                         }
                       },
                     ),

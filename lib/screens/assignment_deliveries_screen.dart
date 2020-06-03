@@ -110,43 +110,44 @@ class _AssignmentDeliveriesScreenState
         child: Padding(
           padding: EdgeInsets.all(12.0),
           child: Container(
-            color: Theme.of(context).accentColor,
-            child: ListTile(
-              title: Container(
-                color: Theme.of(context).accentColor,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                      child: Text(
-                        "Integrantes: ",
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
+            child: Theme(
+
+data: Theme.of(context).copyWith(textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white38))),                          child: ListTile(
+                title: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(bottom: 20.0),
+                        child: Text(
+                          "Integrantes: ",
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
+                      students(delivery.id),
+                    ],
+                  ),
+                ),
+                subtitle: Column(
+                  children: <Widget>[
+                    deliveryDateRow(delivery),
+                    gradeForm(delivery),
+                    gradeGivenDateText(delivery),
+                    Text(
+                      "Comentários:",
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    students(delivery.id),
+                    comments(delivery.id),
+                    commentForm(delivery.id),
                   ],
                 ),
-              ),
-              subtitle: Column(
-                children: <Widget>[
-                  deliveryDateRow(delivery),
-                  gradeForm(delivery),
-                  gradeGivenDateText(delivery),
-                  Text(
-                    "Comentários:",
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  comments(delivery.id),
-                  commentForm(delivery.id),
-                ],
               ),
             ),
           ),

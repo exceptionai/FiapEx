@@ -1,11 +1,20 @@
 import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/components/drawer_fiap_ex.dart';
+import 'package:FiapEx/models/roll_model.dart';
+import 'package:FiapEx/services/row_call_service.dart';
 import 'package:FiapEx/tiles/row_call_history_tile.dart';
-import 'package:FiapEx/screens/new_roll_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class RowCallHistoryScreen extends StatelessWidget {
+class RowCallHistoryScreen extends StatefulWidget {
+
+  @override
+  _RowCallHistoryScreenState createState() => _RowCallHistoryScreenState();
+}
+
+class _RowCallHistoryScreenState extends State<RowCallHistoryScreen> {
+  RowCallService service = RowCallService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,14 +24,15 @@ class RowCallHistoryScreen extends StatelessWidget {
         child: InkWell(
           child: Image.asset('assets/images/entregatrabalhos.png', height: 26),
           onTap: () {
-            Navigator.of(context).pushNamed('/assignment');
+            Navigator.of(context).pushReplacementNamed('/assignment');
           },
         ),
       )),
       floatingActionButton: FloatingActionButton(
                 heroTag: "button",
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/new');
+                onPressed: () async {
+                  await Navigator.of(context).pushNamed('/new');
+                  setState(() {});
                 },
                 child: Icon(Icons.exposure_plus_1),
                 backgroundColor: Color.fromRGBO(237, 20, 91, .9),
@@ -50,17 +60,29 @@ class RowCallHistoryScreen extends StatelessWidget {
                   ),
                 ),
               ),
-                RowCallHistoryTile(),
-                RowCallHistoryTile(done: true),
-                RowCallHistoryTile(done: true),
-                RowCallHistoryTile(done: true),
-                RowCallHistoryTile(done: true),
-                RowCallHistoryTile(done: true),
-                RowCallHistoryTile(done: true),
-                RowCallHistoryTile(done: true),
-              ],
-            ),
-      ),
+              FutureBuilder<List<RollModel>>(
+                future: service.getAllRowCall(),
+                builder: (context, snapshot){
+                  if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                    if(snapshot.data.length > 0){
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index){
+                          return RowCallHistoryTile(rowModel: snapshot.data[index], onChanged: (){
+                            setState((){});
+                          });
+                        }
+                      );
+                    }
+                    return Center(child: Icon(Icons.sentiment_dissatisfied,color: Theme.of(context).primaryColor,size: 90,));
+                  }
+                  return Center(child:CircularProgressIndicator());
+                },
+              )
+            ],
+          )),
     );
   }
 }

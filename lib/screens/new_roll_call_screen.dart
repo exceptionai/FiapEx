@@ -2,7 +2,7 @@ import 'package:FiapEx/components/app_bar_fiap_ex.dart';
 import 'package:FiapEx/models/class_model.dart';
 import 'package:FiapEx/models/discipline_model.dart';
 import 'package:FiapEx/models/roll_model.dart';
-import 'package:FiapEx/repository/rollRegister_repository.dart';
+import 'package:FiapEx/services/row_call_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,32 +14,60 @@ class NewRowCallScreen extends StatefulWidget {
 class _NewRowCallScreenState extends State<NewRowCallScreen> {
   final GlobalKey<FormState> rowCallFormKey = new GlobalKey<FormState>();
   RollModel rollModel = new RollModel();
-  RollRepository repository = new RollRepository();
+  RowCallService service = new RowCallService();
+  List<ClassModel> studentClasses = List<ClassModel>();
+  List<DisciplineModel> disciplines = List<DisciplineModel>();
+  bool loadingDropDown = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getStudentClasses();
+  }
+
+  getStudentClasses() async {
+    studentClasses = await service.getAllClasses();
+    setState(() {});
+  }
+
+  getDisciplines({int classId}) async {
+    setState(() {
+      loadingDropDown = true;
+    });
+    await Future.delayed(Duration(milliseconds: 500));
+    disciplines = await service.getAllDisciplinesByClass(classId: classId);
+    setLoading(false);
+  }
+
+  setLoading(bool value) {
+    setState(() {
+      {
+        loadingDropDown = value;
+      }
+    });
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarFiapEx(
-        action: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: InkWell(
-            child:
-                Image.asset('assets/images/entregatrabalhos.png', height: 26),
-            onTap: () {
-              Navigator.of(context).pushNamed('/assignment');
-            },
+        appBar: AppBarFiapEx(
+          action: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child:
+                  Image.asset('assets/images/entregatrabalhos.png', height: 26),
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed('/assignment');
+              },
+            ),
           ),
         ),
-      ),
-      body: Container(
-        color: Theme.of(context).accentColor,
-        child: Padding(
-          padding: EdgeInsets.all(18.0),
-          child: SingleChildScrollView(
-            child: buildForm(context),
-          ),
-        ),
-      ),
-    );
+        backgroundColor: Theme.of(context).accentColor,
+        body: Container(
+            child: Padding(
+                padding: EdgeInsets.all(18.0),
+                child: SingleChildScrollView(
+                  child: buildForm(context),
+                ))));
   }
 
   Form buildForm(BuildContext context) {
@@ -73,7 +101,13 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
                 padding: const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 0.0),
                 child: buildDropdownButtonForDiscipline(),
               ),
-              buildCupertinoDatePicker(),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                child: Container(
+                  height: 200,
+                  child: buildCupertinoDatePicker(),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: buildRaisedButton(context),
@@ -95,33 +129,91 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
       onPressed: () {
         if (rowCallFormKey.currentState.validate()) {
           rowCallFormKey.currentState.save();
-          repository.saveRoll(rollModel);
-
-          Navigator.of(context).pushReplacementNamed(
-            '/rowcall',
-            arguments: rollModel,
-          );
+          saveRowCall();
         }
       },
     );
   }
 
-  DropdownButtonFormField<DisciplineModel> buildDropdownButtonForDiscipline() {
-    return DropdownButtonFormField<DisciplineModel>(
+  Widget buildCupertinoDatePicker() {
+    return Theme(
+      data: ThemeData(
+        cupertinoOverrideTheme: CupertinoThemeData(
+          textTheme: CupertinoTextThemeData(
+            dateTimePickerTextStyle:
+                TextStyle(color: Colors.white, fontSize: 16),
+            pickerTextStyle: TextStyle(color: Colors.white, fontSize: 12),
+          ),
+        ),
+      ),
+      child: CupertinoDatePicker(
+        onDateTimeChanged: (DateTime newdate) {
+          rollModel.date = newdate;
+        },
+        use24hFormat: true,
+        maximumDate: DateTime.now(),
+        minimumYear: 2010,
+        initialDateTime: DateTime.now().subtract(Duration(seconds: 10)),
+        minuteInterval: 1,
+        mode: CupertinoDatePickerMode.date,
+      ),
+    );
+  }
+
+  DropdownButtonFormField<ClassModel> buildDropdownButtonForClass() {
+    return DropdownButtonFormField<ClassModel>(
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         enabledBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       ),
+      iconEnabledColor: Colors.white,
+      hint: Text("Selecione a turma", style: TextStyle(fontSize: 17.0)),
+      items: studentClasses
+          .map((label) => DropdownMenuItem(
+                child: Text(label.name),
+                value: label,
+              ))
+          .toList(),
+      validator: (ClassModel value) {
+        if (value == null) {
+          return "Uma turma deve ser selecionada.";
+        }
+        return null;
+      },
+      onSaved: (value) {},
+      onChanged: (value) {
+        rollModel.idClass = value.id;
+        setLoading(true);
+        getDisciplines(classId: value.id);
+      },
+    );
+  }
+
+  Widget buildDropdownButtonForDiscipline() {
+    if (loadingDropDown) {
+      return Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+        ),
+      );
+    }
+    return DropdownButtonFormField<DisciplineModel>(
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+                color: disciplines.isEmpty ? Colors.grey[800] : Colors.white)),
+      ),
+      iconEnabledColor: Colors.white,
+      iconDisabledColor: Colors.grey[800],
       hint: Text(
         "Selecione a matéria",
-        style: TextStyle(fontSize: 17.0),
+        style: TextStyle(
+            fontSize: 17.0,
+            color: disciplines.isEmpty ? Colors.grey[800] : Colors.white),
       ),
-      items: [
-        DisciplineModel.withIdName(id: 1, name: "Denvolvimento Cross Platform"),
-        DisciplineModel.withIdName(
-            id: 1, name: "Desenvolvimento Mobile Híbrido")
-      ]
+      items: disciplines
           .map((label) => DropdownMenuItem(
                 child: Text(label.name),
                 value: label,
@@ -134,71 +226,20 @@ class _NewRowCallScreenState extends State<NewRowCallScreen> {
         return null;
       },
       onSaved: (value) {},
-      onChanged: (value) {
-        rollModel.idDiscipline = value.id;
-      },
-    );
-  }
-
-  DropdownButtonFormField<ClassModel> buildDropdownButtonForClass() {
-    return DropdownButtonFormField<ClassModel>(
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-      ),
-      hint: Text("Selecione a turma", style: TextStyle(fontSize: 17.0)),
-      items: [
-        ClassModel.withIdName(id: 1, name: "1TDSS"),
-        ClassModel.withIdName(id: 2, name: "3SIT"),
-        ClassModel.withIdName(id: 3, name: "3SIR")
-      ]
-          .map((label) => DropdownMenuItem(
-                child: Text(label.name),
-                value: ClassModel(),
-              ))
-          .toList(),
-      validator: (ClassModel value) {
-        if (value == null) {
-          return "Uma turma deve ser selecionada.";
-        }
-        return null;
-      },
-      onSaved: (value) {},
-      onChanged: (value) {
-        rollModel.idClass = value.id;
-      },
-    );
-  }
-
-  Padding buildCupertinoDatePicker() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30.0),
-      child: Container(
-        height: 200,
-        child: Theme(
-          data: ThemeData(
-            cupertinoOverrideTheme: CupertinoThemeData(
-              textTheme: CupertinoTextThemeData(
-                dateTimePickerTextStyle:
-                    TextStyle(color: Colors.white, fontSize: 16),
-                pickerTextStyle: TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ),
-          ),
-          child: CupertinoDatePicker(
-            onDateTimeChanged: (DateTime newdate) {
-              rollModel.date = newdate;
+      onChanged: disciplines == null
+          ? null
+          : (value) {
+              rollModel.idDiscipline = value.id;
             },
-            use24hFormat: true,
-            maximumDate: new DateTime(2022, 12, 30),
-            minimumYear: 2010,
-            initialDateTime: DateTime.now(),
-            minuteInterval: 1,
-            mode: CupertinoDatePickerMode.date,
-          ),
-        ),
-      ),
+    );
+  }
+
+  saveRowCall() async {
+    RollModel updatedModel = await service.createRowCall(rollModel);
+
+    Navigator.of(context).pushReplacementNamed(
+      '/rowcall',
+      arguments: updatedModel,
     );
   }
 }

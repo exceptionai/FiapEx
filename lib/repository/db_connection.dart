@@ -46,10 +46,11 @@ class DbConnection {
 
   static final rollRegisterTable = {
     "tableName" : "rollRegisters",
-    "idColumn" : "idrollRegister",
+    "idColumn" : "idRollRegister",
     "fkStudentColumn" : "rm",
     "fkRollColumn" : "idRoll",
-    "presenceColumn" : "presence"
+    "presenceColumn" : "presence",
+    "registerDateColumn" :"registerDate"
   };
 
   static final assignmentTable = {
@@ -135,16 +136,17 @@ class DbConnection {
       """CREATE TABLE ${rollTable["tableName"]}(
          ${rollTable["idColumn"]} INTEGER PRIMARY KEY,
          ${rollTable["dateColumn"]} TEXT,
-         ${rollTable["doneColumn"]} TEXT,
+         ${rollTable["doneColumn"]} INTEGER,
          ${rollTable["fkClassColumn"]} INTEGER,
          ${rollTable["fkDisciplineColumn"]} INTEGER,
          FOREIGN KEY (${rollTable["fkClassColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}),
-         FOREIGN KEY (${rollTable["fkDisciplineColumn"]}) references ${classTable["tableName"]} (${classTable["idColumn"]}));""",
+         FOREIGN KEY (${rollTable["fkDisciplineColumn"]}) references ${disciplineTable["tableName"]} (${disciplineTable["idColumn"]}));""",
       """CREATE TABLE ${rollRegisterTable["tableName"]}(
-         ${rollRegisterTable["idColumn"]} INTEGER PRIMARY KEY,
          ${rollRegisterTable["fkStudentColumn"]} INTEGER,
          ${rollRegisterTable["fkRollColumn"]} INTEGER,
-         ${rollRegisterTable["presenceColumn"]} TEXT,
+         ${rollRegisterTable["presenceColumn"]} INTEGER,
+         ${rollRegisterTable["registerDateColumn"]} TEXT,
+         PRIMARY KEY (${rollRegisterTable["fkStudentColumn"]}, ${rollRegisterTable["fkRollColumn"]}),
          FOREIGN KEY (${rollRegisterTable["fkStudentColumn"]}) references ${studentTable["tableName"]} (${studentTable["idColumn"]}),
          FOREIGN KEY (${rollRegisterTable["fkRollColumn"]}) references ${rollTable["tableName"]} (${rollTable["idColumn"]}));""",
       """CREATE TABLE ${assignmentTable["tableName"]}(
@@ -177,6 +179,7 @@ class DbConnection {
     ];
 
     List<String> inserts = [
+
       """INSERT INTO ${classTable["tableName"]} (${classTable["idColumn"]},
         ${classTable["nameColumn"]}) VALUES (1,'3SIT');""",
       """INSERT INTO ${classTable["tableName"]} (${classTable["idColumn"]},
@@ -231,7 +234,144 @@ class DbConnection {
          ${studentTable["idColumn"]},
          ${studentTable["nameColumn"]},
          ${studentTable["classFkColumn"]},
-         ${studentTable["imgUrlColumn"]}) VALUES (5,'Celso Portiolli',1,'celso-portiolli.jpg');""", 
+         ${studentTable["imgUrlColumn"]}) VALUES (5,'Celso Portiolli',1,'celso-portiolli.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (6,'Doutor Manhatam',2,'doutor-manhatam.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (7,'Faustinho Silva',1,'faustinho-silva.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (8,'Hello Kitty',2,'hello-kit.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (9,'Homem Aranha',1,'homem-aranha.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (10,'Hulk',2,'hulk.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (11,'Piano Cat',1,'piano-cat.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (12,'Robert Pattinson',2,'robert-pattinson.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (13,'Sherek',1,'sherek.png');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (14,'Steve Jobs',2,'steve-jobs.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (15,'Susana Vieira',1,'susana-vieira.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (16,'Tony Ramos',2,'tony-ramos.jpg');""",
+      """INSERT INTO  ${studentTable["tableName"]} (
+         ${studentTable["idColumn"]},
+         ${studentTable["nameColumn"]},
+         ${studentTable["classFkColumn"]},
+         ${studentTable["imgUrlColumn"]}) VALUES (17,'Toninho Estrela',1,'tony-stark.jpg');""",
+
+      """INSERT INTO ${rollTable["tableName"]} (
+        ${rollTable["dateColumn"]},
+        ${rollTable["doneColumn"]},
+        ${rollTable["fkClassColumn"]},
+        ${rollTable["fkDisciplineColumn"]}) VALUES ('2020-05-28T01:45:29.185Z',0,1,1);""",
+
+      """INSERT INTO ${rollTable["tableName"]} (
+        ${rollTable["dateColumn"]},
+        ${rollTable["doneColumn"]},
+        ${rollTable["fkClassColumn"]},
+        ${rollTable["fkDisciplineColumn"]}) VALUES ('2020-05-27T01:45:29.185Z',1,1,1);""",
+
+      """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (1,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+             """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (3,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+             """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (5,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (7,2, 1, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (9,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (11,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (13,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (15,2, 0, '2020-05-27T01:45:29.185Z'); """,
+
+            """INSERT INTO ${rollRegisterTable["tableName"]}(
+         ${rollRegisterTable["fkStudentColumn"]},
+         ${rollRegisterTable["fkRollColumn"]},
+         ${rollRegisterTable["presenceColumn"]},
+         ${rollRegisterTable["registerDateColumn"]})
+         VALUES (17,2, 0, '2020-05-27T01:45:29.185Z'); """,
       """INSERT INTO ${assignmentTable["tableName"]} (
         ${assignmentTable["idColumn"]},
         ${assignmentTable["subjectColumn"]},
@@ -253,7 +393,8 @@ class DbConnection {
         ${assignmentTable["observationsColumn"]},
         ${assignmentTable["fkClassIdColumn"]},
         ${assignmentTable["fkDisciplineIdColumn"]}) values (3, 'Chamada e entrega de trabalhos da FIAP', '2020-07-11T23:59:59.999Z', 'Métodos de consulta assíncronos (mandatório)', 1, 1);""",
-      """INSERT INTO ${deliveryTable["tableName"]} (
+      
+         """INSERT INTO ${deliveryTable["tableName"]} (
         ${deliveryTable["idColumn"]},
         ${deliveryTable["deliveryDateColumn"]},
         ${deliveryTable["gradeColumn"]},
@@ -323,6 +464,7 @@ class DbConnection {
         ${commentTable["messageColumn"]},
         ${commentTable["dateColumn"]},
         ${commentTable["fkDeliveryIdColumn"]}) values (2, 'BACANA DEMAIS CARA', '2020-05-30T11:30:59.999Z', 1);""",
+   
     ];
     
     return await openDatabase(path, version: 1, onConfigure: _onConfigure, onCreate: (Database db, int newerVersion) async {
