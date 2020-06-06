@@ -2,6 +2,7 @@ import 'package:FiapEx/screens/assignment_deliveries_screen.dart';
 import 'package:FiapEx/screens/assignment_screen.dart';
 import 'package:FiapEx/screens/login_screen.dart';
 import 'package:FiapEx/screens/new_roll_call_screen.dart';
+import 'package:FiapEx/screens/onboarding_screen.dart';
 import 'package:FiapEx/screens/row_call_history_screen.dart';
 import 'package:FiapEx/screens/row_call_screen.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,13 @@ class MyApp extends StatelessWidget {
           case '/assignment':
             return  MaterialPageRoute(
               builder: (_) => new AssignmentScreen(),
+              settings: settings,
+            );
+
+
+          case '/onboarding':
+            return  MaterialPageRoute(
+              builder: (_) => new OnBoardingScreen(),
               settings: settings,
             );
           
