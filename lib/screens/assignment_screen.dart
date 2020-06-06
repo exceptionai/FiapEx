@@ -52,7 +52,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         action: Padding(
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
-            child: Image.asset('assets/images/pendenteicone.png', height: 26),
+            child: Image.asset('assets/images/rollcallicon.png', height: 26),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
