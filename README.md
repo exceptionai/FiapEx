@@ -2,6 +2,10 @@
 Um app criado pela Exception para FIAP.
 Gerencie chamadas e avalie trabalhos num único aplicativo!
 
+Tela de login e tela de Onboarding:
+
+<img src="https://user-images.githubusercontent.com/42506011/83934334-8bbb8500-a786-11ea-9a7c-5c6f97da410b.gif" width="350">
+
 Histórico de chamadas:
 
 ![0](https://user-images.githubusercontent.com/42506011/83934112-a2f97300-a784-11ea-9ccd-a8589574f72a.jpg)
